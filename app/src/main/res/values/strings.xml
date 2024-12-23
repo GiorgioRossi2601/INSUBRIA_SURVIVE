@@ -7,9 +7,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Esci</string>
 
+    <string name="menu_home">Home</string>
     <string name="menu_esami">Esami</string>
     <string name="menu_orario_lezioni">Orario Lezioni</string>
     <string name="menu_timeline">Timeline Padiglioni</string>
     <string name="menu_navigatore">Navigatore</string>
     <string name="menu_preferenze">Preferenze</string>
+
 </resources>

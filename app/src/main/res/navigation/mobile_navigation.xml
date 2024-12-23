@@ -12,14 +12,33 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.insubria_survive.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_exams"
+        android:name="com.example.insubria_survive.ui.esami.EsamiFragment"
+        android:label="@string/menu_esami"
+        tools:layout="@layout/fragment_esami" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.insubria_survive.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_lessons"
+        android:name="com.example.insubria_survive.ui.lezioni.lezioniFragment"
+        android:label="@string/menu_orario_lezioni"
+        tools:layout="@layout/fragment_lezioni" />
+
+    <fragment
+        android:id="@+id/nav_timeline"
+        android:name="com.example.insubria_survive.ui.timeline.timelineFragment"
+        android:label="@string/menu_timeline"
+        tools:layout="@layout/fragment_timeline" />
+
+    <fragment
+        android:id="@+id/nav_navigator"
+        android:name="com.example.insubria_survive.ui.navigatore.navigatoreFragment"
+        android:label="@string/menu_navigatore"
+        tools:layout="@layout/fragment_lezioni" />
+
+    <fragment
+        android:id="@+id/nav_preferences"
+        android:name="com.example.insubria_survive.ui.preferenze.preferenzeFragment"
+        android:label="@string/menu_preferenze"
+        tools:layout="@layout/fragment_lezioni" />
+
 </navigation>

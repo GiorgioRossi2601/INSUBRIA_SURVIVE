@@ -4,17 +4,36 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
+        <!-- Sezione "Esami" -->
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:id="@+id/nav_exams"
+            android:icon="@drawable/ic_menu_exams"
+            android:title="@string/menu_esami" />
+
+        <!-- Sezione "Orario lezioni" -->
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/nav_lessons"
+            android:icon="@drawable/ic_menu_lessons"
+            android:title="@string/menu_orario_lezioni" />
+
+        <!-- Sezione "Timeline padiglioni" -->
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/nav_timeline"
+            android:icon="@drawable/ic_menu_timeline"
+            android:title="@string/menu_timeline" />
+
+        <!-- Sezione "Navigatore" (mappa / accessi ateneo) -->
+        <item
+            android:id="@+id/nav_navigator"
+            android:icon="@drawable/ic_menu_navigator"
+            android:title="@string/menu_navigatore" />
+
+        <!-- Sezione "Preferenze" -->
+        <item
+            android:id="@+id/nav_preferences"
+            android:icon="@drawable/ic_menu_preferences"
+            android:title="@string/menu_preferenze" />
+
     </group>
 </menu>

@@ -2,12 +2,14 @@
     <string name="app_name">INSUBRIA_SURVIVE</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Insubria Survive</string>
+    <string name="nav_header_subtitle">Nome utente</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Esci</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_esami">Esami</string>
+    <string name="menu_orario_lezioni">Orario Lezioni</string>
+    <string name="menu_timeline">Timeline Padiglioni</string>
+    <string name="menu_navigatore">Navigatore</string>
+    <string name="menu_preferenze">Preferenze</string>
 </resources>

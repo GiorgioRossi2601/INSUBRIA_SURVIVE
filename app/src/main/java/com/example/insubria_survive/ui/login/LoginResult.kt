@@ -1,4 +1,4 @@
-package com.example.insubria_survive.ui.ui.login
+package com.example.insubria_survive.ui.login
 
 /**
  * Authentication result : success (user details) or error message.

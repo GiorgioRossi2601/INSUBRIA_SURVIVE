@@ -1,4 +1,4 @@
-package com.example.insubria_survive.ui.ui.login
+package com.example.insubria_survive.ui.login
 
 /**
  * User details post authentication that is exposed to the UI

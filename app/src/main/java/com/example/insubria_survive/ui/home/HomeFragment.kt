@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.insubria_survive.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and

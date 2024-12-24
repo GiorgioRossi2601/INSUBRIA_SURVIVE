@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.google.android.material.snackbar.Snackbar
+import android.view.View
+import android.widget.TextView
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,11 +15,13 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.insubria_survive.databinding.ActivityMainBinding
+import com.example.insubria_survive.data.LoginRepository
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private val loginRepository: LoginRepository = LoginRepository;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +31,14 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
-        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
+
+        //Settare il testo dell'utente della navBar
+        val headerView: View = navView.getHeaderView(0);
+        val textViewUsername: TextView = headerView.findViewById<View>(R.id.usernameUtente) as TextView
+        textViewUsername.setText(loginRepository.user?.nome + " " + loginRepository.user?.cognome ?: "Nessun utente");
+
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -61,5 +65,7 @@ class MainActivity : AppCompatActivity() {
     fun onEsciClick(item: MenuItem) {
         //TODO Gestire esci on Click
         Log.d("TAG", "onClick premuto")
+        loginRepository.logout()
+        finish()
     }
 }

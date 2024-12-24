@@ -1,4 +1,4 @@
-package com.example.insubria_survive.ui.data
+package com.example.insubria_survive.data
 
 /**
  * A generic class that holds a value with its loading status.

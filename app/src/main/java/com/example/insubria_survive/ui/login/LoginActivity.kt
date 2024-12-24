@@ -1,20 +1,20 @@
-package com.example.insubria_survive.ui.ui.login
+package com.example.insubria_survive.ui.login
 
-import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.insubria_survive.MainActivity
 import com.example.insubria_survive.databinding.ActivityLoginBinding
-
-import com.example.insubria_survive.ui.R
+import com.example.insubria_survive.R
 
 class LoginActivity : AppCompatActivity() {
 
@@ -59,10 +59,7 @@ class LoginActivity : AppCompatActivity() {
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
             }
-            setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            finish()
+            setResult(RESULT_OK)
         })
 
         username.afterTextChanged {
@@ -107,6 +104,8 @@ class LoginActivity : AppCompatActivity() {
             "$welcome $displayName",
             Toast.LENGTH_LONG
         ).show()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

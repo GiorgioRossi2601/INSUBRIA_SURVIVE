@@ -1,13 +1,15 @@
-package com.example.insubria_survive.ui.data
+package com.example.insubria_survive.data
 
-import com.example.insubria_survive.ui.data.model.LoggedInUser
+import android.util.Log
+import com.example.insubria_survive.data.model.LoggedInUser
 
 /**
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
  */
 
-class LoginRepository(val dataSource: LoginDataSource) {
+object LoginRepository {
+    val dataSource: LoginDataSource = LoginDataSource()
 
     // in-memory cache of the loggedInUser object
     var user: LoggedInUser? = null
@@ -27,15 +29,18 @@ class LoginRepository(val dataSource: LoginDataSource) {
         dataSource.logout()
     }
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
-        // handle login
-        val result = dataSource.login(username, password)
+    fun login(username: String, password: String, onAfterLogin: (Result<LoggedInUser>) -> Unit) {
+        dataSource.login(username, password) { result ->
+            onInternalLogin(result, onAfterLogin)
+        }
+    }
 
+    private fun onInternalLogin(result: Result<LoggedInUser>, onAfterLogin: (Result<LoggedInUser>) -> Unit) {
+        Log.d("LOGIN","EVENTO RAGGIUNTO 1")
         if (result is Result.Success) {
             setLoggedInUser(result.data)
         }
-
-        return result
+        onAfterLogin(result);
     }
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {

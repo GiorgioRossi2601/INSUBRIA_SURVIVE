@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onEsciClick(item: MenuItem) {
-        //TODO Gestire esci on Click
         Log.d("TAG", "onClick premuto")
         loginRepository.logout()
         finish()

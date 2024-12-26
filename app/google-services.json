@@ -12,7 +12,20 @@
           "package_name": "com.example.insubria_survive"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "514391608735-qvdoosilrs2p6ohkn8o3qp9edouuoh10.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.insubria_survive",
+            "certificate_hash": "57af8ded8a9ac02619e2dbf7c091573dbd0dc25d"
+          }
+        },
+        {
+          "client_id": "514391608735-kl6ro9c8c3ed5sia8kr42nnlkfv4nbia.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAMFBuzpbwZ4sa3-kA_F44BofCOCoMX9q4"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "514391608735-kl6ro9c8c3ed5sia8kr42nnlkfv4nbia.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -1,8 +1,7 @@
 [versions]
-agp = "8.7.2"
+agp = "8.7.3"
 firebaseBom = "33.7.0"
-firebaseUiFirestore = "8.0.2"
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -15,14 +14,13 @@ lifecycleViewmodelKtx = "2.8.7"
 navigationFragmentKtx = "2.8.5"
 navigationUiKtx = "2.8.5"
 annotation = "1.9.1"
-playServicesMaps = "19.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-auth = { module = "com.google.firebase:firebase-auth", version = "23.1.0" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
-firebase-ui-firestore = { module = "com.firebaseui:firebase-ui-firestore", version.ref = "firebaseUiFirestore" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore", version = "25.1.1" }
+firebase-ui-firestore = { module = "com.firebaseui:firebase-ui-firestore", version = "8.0.2" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -34,9 +32,10 @@ androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifec
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
-play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+google-gsm-google-services = {id = "com.google.gms.google-services", version = "4.4.2"}
 

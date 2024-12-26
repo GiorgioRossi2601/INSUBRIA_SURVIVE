@@ -28,14 +28,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true
+        //dataBinding = true
     }
 }
 
@@ -48,20 +49,17 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.play.services.maps)
     implementation(libs.androidx.annotation)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))
-
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-
-    // TODO: Add the dependencies for Firebase products you want to use
-    // See https://firebase.google.com/docs/android/setup#available-libraries
-    // For example, add the dependencies for Firebase Authentication and Cloud Firestore
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.ui.firestore)
+
+    // Per l'autenticazione con gli account Google (OAuth 2.0)
+    implementation ("com.google.android.gms:play-services-auth:21.3.0")
+
 }

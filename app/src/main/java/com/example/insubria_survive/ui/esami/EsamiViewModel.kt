@@ -50,7 +50,7 @@ class EsamiViewModel() : ViewModel() {
                             println("Errore nel parsing del documento: ${e.message}")
                             null
                         }
-                    }.sortedBy { it.data?.toDate() } //ordina per data di esame
+                    }.sortedWith(compareBy({ it.corso?.lowercase() }, { it.data?.toDate() })) //ordina per nome e data di esame
                     if (esami.isEmpty()) {
                         println("Nessun documento valido trovato nella collezione.")
                     }

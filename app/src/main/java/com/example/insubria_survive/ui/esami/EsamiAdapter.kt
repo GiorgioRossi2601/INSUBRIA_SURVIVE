@@ -29,7 +29,7 @@ class EsamiAdapter(private var esami: List<Esame>, private val onEsameStatusClic
         holder.tvNomeEsame.text = esame.corso ?: "Corso non disponibile"
         // Converte il Timestamp in una stringa leggibile
         val dataFormattata = esame.data?.toDate()?.let { date ->
-            java.text.SimpleDateFormat("dd MMMM yyyy", java.util.Locale.getDefault()).format(date)
+            java.text.SimpleDateFormat("dd MMMM yyyy - HH:mm", java.util.Locale.getDefault()).format(date)
         } ?: "Data non disponibile"
         holder.tvDataEsame.text = dataFormattata
         holder.tvAulaEsame.text = esame.aula

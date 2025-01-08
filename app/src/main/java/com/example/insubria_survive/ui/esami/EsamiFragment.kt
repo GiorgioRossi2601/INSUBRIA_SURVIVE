@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.insubria_survive.data.model.Esame
 import com.example.insubria_survive.databinding.FragmentEsamiBinding
 
 class EsamiFragment : Fragment() {
@@ -40,7 +41,9 @@ class EsamiFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        esamiAdapter = EsamiAdapter(emptyList())
+        esamiAdapter = EsamiAdapter(emptyList()) { esame ->
+            showEsameStatusDialog(esame)
+        }
         binding.recyclerViewEsami.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = esamiAdapter
@@ -63,4 +66,12 @@ class EsamiFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun EsamiFragment.showEsameStatusDialog(esame: Esame) {
+        val dialogView = CambiaStatoDialogFragment.newInstance(esame)
+        dialogView.show(parentFragmentManager, "CambiaStatoDialogFragment")
+
+    }
 }
+
+

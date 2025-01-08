@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.insubria_survive.data.model.Esame
 import com.example.insubria_survive.R
 
-class EsamiAdapter(private var esami: List<Esame>) : RecyclerView.Adapter<EsamiAdapter.EsameViewHolder>() {
+class EsamiAdapter(private var esami: List<Esame>, private val onEsameStatusClick: (Esame) -> Unit) : RecyclerView.Adapter<EsamiAdapter.EsameViewHolder>() {
 
     class EsameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvNomeEsame: TextView = itemView.findViewById(R.id.tvNomeEsame)
         val tvDataEsame: TextView = itemView.findViewById(R.id.tvDataEsame)
         val tvAulaEsame: TextView = itemView.findViewById(R.id.tvAulaEsame)
         val tvPadiglioneEsame: TextView = itemView.findViewById(R.id.tvPadiglioneEsame)
+        val btPreferenzeEsame: TextView = itemView.findViewById(R.id.btPreferenzeEsame)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EsameViewHolder {
@@ -33,6 +34,11 @@ class EsamiAdapter(private var esami: List<Esame>) : RecyclerView.Adapter<EsamiA
         holder.tvDataEsame.text = dataFormattata
         holder.tvAulaEsame.text = esame.aula
         holder.tvPadiglioneEsame.text = esame.padiglione
+
+        // Gestione click del bottone
+        holder.btPreferenzeEsame.setOnClickListener {
+            onEsameStatusClick(esame)
+        }
     }
 
     override fun getItemCount(): Int = esami.size

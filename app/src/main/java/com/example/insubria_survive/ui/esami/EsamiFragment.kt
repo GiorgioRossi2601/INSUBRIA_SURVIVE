@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.insubria_survive.data.model.Esame
 import com.example.insubria_survive.databinding.FragmentEsamiBinding
+import com.example.insubria_survive.ui.preferenze.CambiaStatoDialogFragment
 
 class EsamiFragment : Fragment() {
 
@@ -68,7 +68,7 @@ class EsamiFragment : Fragment() {
     }
 
     private fun EsamiFragment.showEsameStatusDialog(esame: Esame) {
-        val dialogView = CambiaStatoDialogFragment.newInstance(esame)
+        val dialogView = CambiaStatoDialogFragment.Companion.newInstance(esame)
         dialogView.show(parentFragmentManager, "CambiaStatoDialogFragment")
 
     }

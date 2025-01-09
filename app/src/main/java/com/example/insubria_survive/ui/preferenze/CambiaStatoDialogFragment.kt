@@ -1,8 +1,7 @@
-package com.example.insubria_survive.ui.esami
+package com.example.insubria_survive.ui.preferenze
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.DialogFragment
 import com.example.insubria_survive.data.model.Esame
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

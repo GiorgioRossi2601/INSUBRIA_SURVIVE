@@ -1,6 +1,6 @@
 package com.example.insubria_survive.data.model
 
-data class Iscrizione(
+data class Preferenza(
     val id: String?,
     val esame_codice: String?,
     val utente_codice: String?,

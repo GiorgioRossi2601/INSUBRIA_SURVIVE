@@ -32,7 +32,7 @@ class LocalDbRepository(context: Context) {
             put("padiglione", esame.padiglione)
         }
 
-        Log.d("LocalDbRepository", "Salvataggio esame id=${esame.id}, corso=${esame.corso}")
+        Log.d("LocalDbRepository", "Salvataggio esame $contentValues")
         // Se esiste già quell'ID, lo rimpiazza
         db.insertWithOnConflict(
             "esame",

@@ -60,7 +60,9 @@ class EsamiViewModel(
                     val esami = snapshot.documents.mapNotNull { doc ->
                         try {
                             println("Documento recuperato: ${doc.data}")
-                            doc.toObject(Esame::class.java)
+                            val esame = doc.toObject(Esame::class.java)
+                            esame?.let{it.id = doc.id}
+                            esame
                         } catch (e: Exception) {
                             println("Errore nel parsing del documento: ${e.message}")
                             null

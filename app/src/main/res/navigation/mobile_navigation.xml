@@ -33,12 +33,12 @@
         android:id="@+id/nav_navigator"
         android:name="com.example.insubria_survive.ui.navigatore.navigatoreFragment"
         android:label="@string/menu_navigatore"
-        tools:layout="@layout/fragment_lezioni" />
+        tools:layout="@layout/fragment_navigatore" />
 
     <fragment
         android:id="@+id/nav_preferences"
         android:name="com.example.insubria_survive.ui.preferenze.preferenzeFragment"
         android:label="@string/menu_preferenze"
-        tools:layout="@layout/fragment_lezioni" />
+        tools:layout="@layout/fragment_preferenze" />
 
 </navigation>

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.insubria_survive.data.db.LocalDbRepository
 import com.example.insubria_survive.data.model.Esame
 import com.example.insubria_survive.databinding.FragmentEsamiBinding
 import com.example.insubria_survive.ui.preferenze.CambiaStatoDialogFragment
@@ -29,8 +30,10 @@ class EsamiFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         println("Inizializzazione EsamiFragment")
+        val repository = LocalDbRepository(requireContext())
+        val factory = EsamiViewModelFactory(repository)
         esamiViewModel =
-            ViewModelProvider(this).get(EsamiViewModel::class.java)
+            ViewModelProvider(this, factory).get(EsamiViewModel::class.java)
 
         _binding = FragmentEsamiBinding.inflate(inflater, container, false)
 

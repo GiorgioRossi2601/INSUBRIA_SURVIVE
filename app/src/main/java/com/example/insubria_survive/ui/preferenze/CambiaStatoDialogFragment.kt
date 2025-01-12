@@ -66,15 +66,18 @@ class CambiaStatoDialogFragment : DialogFragment() {
                 if (selectedIndex != -1) {
                     val statoSelezionato = stati[selectedIndex]
 
-                    // Aggiorna lo shared view model con il nuovo stato
-                    sharedEsameViewModel.setStatoEsame(statoSelezionato)
-                    // Qui potresti anche aggiungere una logica per aggiornare il DB, se necessario.
-
-                    // Se vuoi salvare la preferenza nel DB, qui puoi richiamare il repository per aggiornare la tabella preferenze_esame.
-                    // Ad esempio:
                     val username = LoginRepository.user?.username.toString()
-                    val preferenza = Preferenza(null, esame, username, statoSelezionato.name)
-                    LocalDbRepository(requireContext()).insertOrUpdatePreferenza(preferenza)
+                    val repository = LocalDbRepository(requireContext())
+                    // Recupera l'esistente, se presente
+                    val existingPref = repository.getPreferenzaByEsameAndUser(esame, username)
+                    val preferenza = if (existingPref != null) {
+                        Preferenza(existingPref.id, esame, username, statoSelezionato.name)
+                    } else {
+                        Preferenza(null, esame, username, statoSelezionato.name)
+                    }
+
+                    repository.insertOrUpdatePreferenza(preferenza)
+                    sharedEsameViewModel.setStatoEsame(statoSelezionato)
 
                     // Mostra il messaggio informativo:
                     val message = "L'utente $username ha scelto lo stato ${statoSelezionato.name} per l'esame ${esame}"

@@ -1,5 +1,6 @@
 package com.example.insubria_survive.ui.preferenze
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,39 +26,72 @@ class preferenzeViewModel(
     private val _nonFareList = MutableLiveData<List<Preferenza>>()
     val nonFareList: LiveData<List<Preferenza>> get() = _nonFareList
 
+    companion object {
+        private const val TAG = "preferenzeViewModel"
+    }
+
     init {
         loadPreferenze()
     }
 
-
+    /**
+     * Carica le preferenze per ciascun esame in base al loro stato.
+     *
+     * Per ogni esame presente nel database:
+     * - Se esiste già una preferenza per l'utente, l'esame viene inserito nella lista corrispondente
+     *   (DA_FARE, IN_FORSE, NON_FARE) in base al valore di preferenza salvato.
+     * - Se non esiste, viene creata una preferenza di default con stato IN_FORSE e l'esame viene
+     *   inserito in quella lista.
+     *
+     * In questo modo ogni esame compare in una sola lista, e il numero totale di preferenze sarà
+     * uguale al numero di esami.
+     */
     fun loadPreferenze() {
         viewModelScope.launch(Dispatchers.IO) {
-            // Carica gli esami per ciascun stato in base all'utente
-            val daFare = repository.getPreferenzeByStato("DA_FARE", username)
-            var inForse = repository.getPreferenzeByStato("IN_FORSE", username)
-            val nonFare = repository.getPreferenzeByStato("NON_FARE", username)
+            Log.d(TAG, "Caricamento delle preferenze per l'utente: $username")
 
-            if (inForse.isEmpty()) {
-                // Se non ci sono preferenze, carica tutti gli esami e crea preferenze di default
-                val tuttiEsami: List<Esame> = repository.getAllEsami()
-                inForse = tuttiEsami.map { esame ->
-                    Preferenza(
-                        id = null,              // L'id verrà generato dal DB (AUTOINCREMENT)
+            // Recupera tutti gli esami presenti nel database locale
+            val tuttiEsami: List<Esame> = repository.getAllEsami()
+            Log.d(TAG, "Totale esami nel DB: ${tuttiEsami.size}")
+
+            // Inizializzo liste mutabili per ciascun stato
+            val listaDaFare = mutableListOf<Preferenza>()
+            val listaInForse = mutableListOf<Preferenza>()
+            val listaNonFare = mutableListOf<Preferenza>()
+
+            // Per ogni esame, verifico se esiste già una preferenza per l'utente.
+            // Se non esiste, creo una preferenza di default con stato "IN_FORSE"
+            for (esame in tuttiEsami) {
+                val prefExistente = repository.getPreferenzaByEsameAndUser(esame.id, username)
+                if (prefExistente != null) {
+                    when (prefExistente.stato) {
+                        "DA_FARE" -> listaDaFare.add(prefExistente)
+                        "NON_FARE" -> listaNonFare.add(prefExistente)
+                        else -> listaInForse.add(prefExistente) // consideriamo anche eventuali altri casi come IN_FORSE
+                    }
+                } else {
+                    // Non esiste una preferenza per questo esame: creazione di default IN_FORSE
+                    val nuovaPreferenza = Preferenza(
+                        id = null,              // L'id verrà assegnato dal DB
                         esame_codice = esame.id,
                         utente_codice = username,
                         stato = "IN_FORSE"
                     )
-                }
-                // Salva queste preferenze nel DB (opzionale)
-                inForse.forEach { pref ->
-                    repository.insertOrUpdatePreferenza(pref)
+                    // Inserisco nel DB la nuova preferenza
+                    repository.insertOrUpdatePreferenza(nuovaPreferenza)
+                    listaInForse.add(nuovaPreferenza)
                 }
             }
 
+            // Log delle quantità per verificare che ogni esame compaia in una sola lista
+            Log.d(TAG, "Preferenze DA_FARE finali: ${listaDaFare.size}")
+            Log.d(TAG, "Preferenze IN_FORSE finali: ${listaInForse.size}")
+            Log.d(TAG, "Preferenze NON_FARE finali: ${listaNonFare.size}")
+
             withContext(Dispatchers.Main) {
-                _daFareList.value = daFare
-                _inForseList.value = inForse
-                _nonFareList.value = nonFare
+                _daFareList.value = listaDaFare
+                _inForseList.value = listaInForse
+                _nonFareList.value = listaNonFare
             }
         }
     }

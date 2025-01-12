@@ -43,7 +43,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
     }
 
     companion object {
-        private const val DB_NAME = "insubria_survive.db"
-        private const val DB_VERSION = 5
+        private const val DB_NAME = "insubria_survive_1.db"
+        private const val DB_VERSION = 1
     }
 }

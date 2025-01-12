@@ -126,7 +126,11 @@ class LocalDbRepository(context: Context) {
             val esameCodiceDb = cursor.getString(cursor.getColumnIndexOrThrow("esame_codice"))
             val utenteUsername = cursor.getString(cursor.getColumnIndexOrThrow("utente_username"))
             val statoValue = cursor.getString(cursor.getColumnIndexOrThrow("stato"))
+            Log.d("LocalDbRepository", "getPreferenzaByEsameAndUser: trovato preferenza: id=$id, esame_codice=$esameCodiceDb, utente=$utenteUsername, stato=$statoValue")
             preferenza = Preferenza(id, esameCodiceDb, utenteUsername, statoValue)
+
+        }else {
+            Log.d("LocalDbRepository", "getPreferenzaByEsameAndUser: nessuna preferenza trovata per esameCodice=$esameCodice e utente=$username")
         }
         cursor.close()
         db.close()

@@ -28,6 +28,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                 esame_codice TEXT,
                 utente_username TEXT,
                 stato TEXT,
+                UNIQUE (esame_codice, utente_username),
                 FOREIGN KEY(esame_codice) REFERENCES esame(id_esame)
             );
             """

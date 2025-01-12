@@ -113,6 +113,28 @@ class LocalDbRepository(context: Context) {
         return preferenzeList
     }
 
+    // Nuovo metodo per recuperare una preferenza in base all'esame e all'utente
+    fun getPreferenzaByEsameAndUser(esameCodice: String?, username: String): Preferenza? {
+        val db: SQLiteDatabase = dbHelper.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT * FROM preferenze_esame WHERE esame_codice = ? AND utente_username = ?",
+            arrayOf(esameCodice, username)
+        )
+        var preferenza: Preferenza? = null
+        if (cursor.moveToFirst()) {
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow("id_preferenza")).toString()
+            val esameCodiceDb = cursor.getString(cursor.getColumnIndexOrThrow("esame_codice"))
+            val utenteUsername = cursor.getString(cursor.getColumnIndexOrThrow("utente_username"))
+            val statoValue = cursor.getString(cursor.getColumnIndexOrThrow("stato"))
+            preferenza = Preferenza(id, esameCodiceDb, utenteUsername, statoValue)
+        }
+        cursor.close()
+        db.close()
+        return preferenza
+    }
+
+
+
     // Mantieni eventuali metodi esistenti (ad esempio, stringToTimestamp) se necessario.
     private fun stringToTimestamp(dateString: String): Timestamp? {
         if (dateString.isEmpty()) return null

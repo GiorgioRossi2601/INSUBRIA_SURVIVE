@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.insubria_survive.data.LoginRepository
 import com.example.insubria_survive.data.db.LocalDbRepository
 import com.example.insubria_survive.data.model.Esame
+import com.example.insubria_survive.data.model.Stato
 import com.example.insubria_survive.databinding.FragmentEsamiBinding
 import com.example.insubria_survive.ui.preferenze.CambiaStatoDialogFragment
 
@@ -74,9 +76,14 @@ class EsamiFragment : Fragment() {
         _binding = null
     }
 
-    private fun EsamiFragment.showEsameStatusDialog(esame: Esame) {
-        val dialogView = CambiaStatoDialogFragment.Companion.newInstance(esame)
-        dialogView.show(parentFragmentManager, "CambiaStatoDialogFragment")
+    private fun showEsameStatusDialog(esame: Esame) {
+        val repository = LocalDbRepository(requireContext())
+        val username = LoginRepository.user?.username.toString()
+        // Recupera la preferenza esistente, se presente
+        val preferenza = repository.getPreferenzaByEsameAndUser(esame.id, username)
+        val statoCorrente = preferenza?.stato?.let { Stato.valueOf(it) } ?: Stato.IN_FORSE
+        val dialog = CambiaStatoDialogFragment.newInstance(esame, statoCorrente)
+        dialog.show(parentFragmentManager, "CambiaStatoDialogFragment")
 
     }
 }

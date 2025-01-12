@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.insubria_survive.data.db.LocalDbRepository
 import com.example.insubria_survive.data.model.Esame
+import com.example.insubria_survive.data.model.EsameConPreferenza
 import com.example.insubria_survive.data.model.Preferenza
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,14 +18,14 @@ class preferenzeViewModel(
     private val username: String
 ) : ViewModel() {
 
-    private val _daFareList = MutableLiveData<List<Preferenza>>()
-    val daFareList: LiveData<List<Preferenza>> get() = _daFareList
+    private val _daFareList = MutableLiveData<List<EsameConPreferenza>>()
+    val daFareList: LiveData<List<EsameConPreferenza>> get() = _daFareList
 
-    private val _inForseList = MutableLiveData<List<Preferenza>>()
-    val inForseList: LiveData<List<Preferenza>> get() = _inForseList
+    private val _inForseList = MutableLiveData<List<EsameConPreferenza>>()
+    val inForseList: LiveData<List<EsameConPreferenza>> get() = _inForseList
 
-    private val _nonFareList = MutableLiveData<List<Preferenza>>()
-    val nonFareList: LiveData<List<Preferenza>> get() = _nonFareList
+    private val _nonFareList = MutableLiveData<List<EsameConPreferenza>>()
+    val nonFareList: LiveData<List<EsameConPreferenza>> get() = _nonFareList
 
     companion object {
         private const val TAG = "preferenzeViewModel"
@@ -46,52 +47,49 @@ class preferenzeViewModel(
      * In questo modo ogni esame compare in una sola lista, e il numero totale di preferenze sarà
      * uguale al numero di esami.
      */
+    /**
+     * Per ogni esame presente nel database, cerca la relativa preferenza per l'utente.
+     * Se non esiste, si considera lo stato di default "IN_FORSE" e, opzionalmente, si
+     * può salvare la nuova preferenza.
+     * Quindi crea un oggetto ExamWithPreference per ciascun esame e li suddivide in liste
+     * in base al valore dello stato.
+     */
     fun loadPreferenze() {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d(TAG, "Caricamento delle preferenze per l'utente: $username")
-
-            // Recupera tutti gli esami presenti nel database locale
+            Log.d(TAG, "Caricamento degli esami per l'utente: $username")
             val tuttiEsami: List<Esame> = repository.getAllEsami()
             Log.d(TAG, "Totale esami nel DB: ${tuttiEsami.size}")
 
-            // Inizializzo liste mutabili per ciascun stato
-            val listaDaFare = mutableListOf<Preferenza>()
-            val listaInForse = mutableListOf<Preferenza>()
-            val listaNonFare = mutableListOf<Preferenza>()
-
-            // Per ogni esame, verifico se esiste già una preferenza per l'utente.
-            // Se non esiste, creo una preferenza di default con stato "IN_FORSE"
-            for (esame in tuttiEsami) {
-                val prefExistente = repository.getPreferenzaByEsameAndUser(esame.id, username)
-                if (prefExistente != null) {
-                    when (prefExistente.stato) {
-                        "DA_FARE" -> listaDaFare.add(prefExistente)
-                        "NON_FARE" -> listaNonFare.add(prefExistente)
-                        else -> listaInForse.add(prefExistente) // consideriamo anche eventuali altri casi come IN_FORSE
-                    }
-                } else {
-                    // Non esiste una preferenza per questo esame: creazione di default IN_FORSE
-                    val nuovaPreferenza = Preferenza(
-                        id = null,              // L'id verrà assegnato dal DB
+            // Creo una lista composite: per ogni esame, uso lo stato presente (se esiste) altrimenti "IN_FORSE".
+            val compositeList = tuttiEsami.map { esame ->
+                val pref = repository.getPreferenzaByEsameAndUser(esame.id, username)
+                val stato = pref?.stato ?: "IN_FORSE"
+                // Se la preferenza non esiste, posso salvarla nel DB (opzionale)
+                if (pref == null) {
+                    val nuovaPref = com.example.insubria_survive.data.model.Preferenza(
+                        id = null,
                         esame_codice = esame.id,
                         utente_codice = username,
-                        stato = "IN_FORSE"
+                        stato = stato
                     )
-                    // Inserisco nel DB la nuova preferenza
-                    repository.insertOrUpdatePreferenza(nuovaPreferenza)
-                    listaInForse.add(nuovaPreferenza)
+                    repository.insertOrUpdatePreferenza(nuovaPref)
                 }
+                EsameConPreferenza(esame, stato)
             }
 
-            // Log delle quantità per verificare che ogni esame compaia in una sola lista
-            Log.d(TAG, "Preferenze DA_FARE finali: ${listaDaFare.size}")
-            Log.d(TAG, "Preferenze IN_FORSE finali: ${listaInForse.size}")
-            Log.d(TAG, "Preferenze NON_FARE finali: ${listaNonFare.size}")
+            // Suddivido in base allo stato
+            val daFare = compositeList.filter { it.stato == "DA_FARE" }
+            val inForse = compositeList.filter { it.stato == "IN_FORSE" }
+            val nonFare = compositeList.filter { it.stato == "NON_FARE" }
+
+            Log.d(TAG, "ExamWithPreference DA_FARE: ${daFare.size}")
+            Log.d(TAG, "ExamWithPreference IN_FORSE: ${inForse.size}")
+            Log.d(TAG, "ExamWithPreference NON_FARE: ${nonFare.size}")
 
             withContext(Dispatchers.Main) {
-                _daFareList.value = listaDaFare
-                _inForseList.value = listaInForse
-                _nonFareList.value = listaNonFare
+                _daFareList.value = daFare
+                _inForseList.value = inForse
+                _nonFareList.value = nonFare
             }
         }
     }

@@ -6,37 +6,53 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.insubria_survive.R
+import com.example.insubria_survive.data.model.EsameConPreferenza
 import com.example.insubria_survive.data.model.Preferenza
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class PreferenzeAdapter(
-    private var preferenze: List<Preferenza>,
-    private val onItemClick: (Preferenza) -> Unit
-) : RecyclerView.Adapter<PreferenzeAdapter.PreferenzaViewHolder>() {
+    private var data: List<EsameConPreferenza>,
+    private val onItemClick: (EsameConPreferenza) -> Unit
+) : RecyclerView.Adapter<PreferenzeAdapter.ExamViewHolder>() {
 
-    class PreferenzaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvEsameCodice: TextView = itemView.findViewById(R.id.tvEsameCodice)
-        val tvStatoPreferenza: TextView = itemView.findViewById(R.id.tvStatoPreferenza)
+    inner class ExamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvExamName: TextView = itemView.findViewById(R.id.tvExamName)
+        val tvExamDate: TextView = itemView.findViewById(R.id.tvExamDate)
+        val tvExamAula: TextView = itemView.findViewById(R.id.tvExamAula)
+        val tvExamPadiglione: TextView = itemView.findViewById(R.id.tvExamPadiglione)
+        val tvExamStato: TextView = itemView.findViewById(R.id.tvExamStato)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PreferenzaViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_preferenza, parent, false)
-        return PreferenzaViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_preferenza, parent, false)
+        return ExamViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: PreferenzaViewHolder, position: Int) {
-        val preferenza = preferenze[position]
-        holder.tvEsameCodice.text = preferenza.esame_codice ?: "Esame non disponibile"
-        holder.tvStatoPreferenza.text = preferenza.stato ?: "Stato non disponibile"
+    override fun onBindViewHolder(holder: ExamViewHolder, position: Int) {
+        val item = data[position]
+        holder.tvExamName.text = item.esame.corso ?: "Esame non disponibile"
+
+        // Formattazione della data
+        val formattedDate = item.esame.data?.toDate()?.let { date ->
+            SimpleDateFormat("dd MMM yyyy - HH:mm", Locale.getDefault()).format(date)
+        } ?: "Data non disponibile"
+        holder.tvExamDate.text = "Data: $formattedDate"
+
+        holder.tvExamAula.text = "Aula: ${item.esame.aula ?: "N/D"}"
+        holder.tvExamPadiglione.text = "Padiglione: ${item.esame.padiglione ?: "N/D"}"
+        holder.tvExamStato.text = "Stato: ${item.stato}"
 
         holder.itemView.setOnClickListener {
-            onItemClick(preferenza)
+            onItemClick(item)
         }
     }
 
-    override fun getItemCount(): Int = preferenze.size
+    override fun getItemCount(): Int = data.size
 
-    fun updatePreferenze(newPreferenze: List<Preferenza>) {
-        preferenze = newPreferenze
+    fun updatePreferenze(newData: List<EsameConPreferenza>) {
+        data = newData
         notifyDataSetChanged()
     }
 }

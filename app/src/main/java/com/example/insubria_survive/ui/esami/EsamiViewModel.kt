@@ -12,7 +12,6 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 class EsamiViewModel(
     private val localDbRepository: LocalDbRepository

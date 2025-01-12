@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.insubria_survive.data.db.LocalDbRepository
@@ -23,6 +24,9 @@ class EsamiFragment : Fragment() {
 
     private lateinit var esamiAdapter: EsamiAdapter
     private lateinit var esamiViewModel: EsamiViewModel
+
+    // Ottieni lo shared view model in ambito Activity
+    private val sharedEsameViewModel: SharedEsameViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

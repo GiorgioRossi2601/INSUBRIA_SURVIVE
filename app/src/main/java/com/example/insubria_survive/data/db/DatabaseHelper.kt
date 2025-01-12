@@ -19,17 +19,30 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
             );
             """
         )
-        // Se hai altre tabelle (preferenze_esame, ecc.), definiscile qui
+
+        // Crea la tabella "preferenze_esame"
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS preferenze_esame (
+                id_preferenza INTEGER PRIMARY KEY AUTOINCREMENT,
+                esame_codice TEXT,
+                utente_username TEXT,
+                stato TEXT,
+                FOREIGN KEY(esame_codice) REFERENCES esame(id_esame)
+            );
+            """
+        )
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS esame")
-        // Se hai altre tabelle, droppale qui
+        db.execSQL("DROP TABLE IF EXISTS preferenze_esame")
         onCreate(db)
     }
 
     companion object {
         private const val DB_NAME = "insubria_survive.db"
-        private const val DB_VERSION = 3
+        private const val DB_VERSION = 5
     }
 }

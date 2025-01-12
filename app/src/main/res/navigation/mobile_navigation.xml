@@ -41,4 +41,6 @@
         android:label="@string/menu_preferenze"
         tools:layout="@layout/fragment_preferenze" />
 
+
+
 </navigation>

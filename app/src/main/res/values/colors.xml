@@ -4,4 +4,7 @@
     <color name="insubria_2">#FF267C6F</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorDaFare">#A5D6A7</color>        <!-- verde chiaro -->
+    <color name="colorInForse">#FFF59D</color>        <!-- giallo chiaro -->
+    <color name="colorNonFare">#EF9A9A</color>         <!-- rosso chiaro -->
 </resources>

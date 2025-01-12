@@ -19,9 +19,9 @@
             android:id="@+id/tvExamName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Nome Esame"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -32,6 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Data: "
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvExamName"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -41,7 +42,6 @@
             android:id="@+id/tvExamAula"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Aula: "
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvExamDate"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -56,15 +56,6 @@
             app:layout_constraintTop_toBottomOf="@id/tvExamAula"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Stato (Preferenza) -->
-        <TextView
-            android:id="@+id/tvExamStato"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stato: "
-            android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvExamPadiglione" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

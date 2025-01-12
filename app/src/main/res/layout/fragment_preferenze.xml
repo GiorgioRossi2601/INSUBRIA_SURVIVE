@@ -1,61 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     xmlns:tools="http://schemas.android.com/tools">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".ui.preferenze.preferenzeFragment">
+
+        <!-- Titolo e RecyclerView per gli Esami "DA_FARE" -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Da Fare"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/colorDaFare"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvDaFare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            tools:context="com.example.insubria_survive.ui.preferenze.preferenzeFragment">
+            android:nestedScrollingEnabled="false" />
 
-            <!-- Titolo e RecyclerView per gli Esami "DA_FARE" -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Da Fare"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:paddingBottom="8dp" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvDaFare"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+        <!-- Titolo e RecyclerView per gli Esami "IN_FORSE" -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="In Forse"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/colorInForse" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvInForse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
 
-            <!-- Titolo e RecyclerView per gli Esami "IN_FORSE" -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="In Forse"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:paddingTop="16dp"
-                android:paddingBottom="8dp" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvInForse"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+        <!-- Titolo e RecyclerView per gli Esami "NON_FARE" -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Non Fare"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/colorNonFare"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvNonFare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
 
-            <!-- Titolo e RecyclerView per gli Esami "NON_FARE" -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Non Fare"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:paddingTop="16dp"
-                android:paddingBottom="8dp" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvNonFare"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
-
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+</ScrollView>

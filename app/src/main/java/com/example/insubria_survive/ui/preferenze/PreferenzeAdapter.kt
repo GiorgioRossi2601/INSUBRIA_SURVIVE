@@ -21,7 +21,6 @@ class PreferenzeAdapter(
         val tvExamDate: TextView = itemView.findViewById(R.id.tvExamDate)
         val tvExamAula: TextView = itemView.findViewById(R.id.tvExamAula)
         val tvExamPadiglione: TextView = itemView.findViewById(R.id.tvExamPadiglione)
-        val tvExamStato: TextView = itemView.findViewById(R.id.tvExamStato)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamViewHolder {
@@ -42,7 +41,16 @@ class PreferenzeAdapter(
 
         holder.tvExamAula.text = "Aula: ${item.esame.aula ?: "N/D"}"
         holder.tvExamPadiglione.text = "Padiglione: ${item.esame.padiglione ?: "N/D"}"
-        holder.tvExamStato.text = "Stato: ${item.stato}"
+
+        // Imposta lo sfondo del container in base allo stato
+        val backgroundColor = when (item.stato) {
+            "DA_FARE" -> holder.itemView.context.getColor(R.color.colorDaFare)  // definito in colors.xml
+            "NON_FARE" -> holder.itemView.context.getColor(R.color.colorNonFare)
+            else -> holder.itemView.context.getColor(R.color.colorInForse)
+        }
+        // Se il layout radice del layout item è il CardView, ad esempio:
+        holder.itemView.setBackgroundColor(backgroundColor)
+
 
         holder.itemView.setOnClickListener {
             onItemClick(item)

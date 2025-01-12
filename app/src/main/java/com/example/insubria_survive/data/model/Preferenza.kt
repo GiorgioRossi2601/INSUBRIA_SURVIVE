@@ -1,6 +1,5 @@
 package com.example.insubria_survive.data.model
 
-import com.example.insubria_survive.data.model.Esame
 
 data class Preferenza(
     val id: String?,

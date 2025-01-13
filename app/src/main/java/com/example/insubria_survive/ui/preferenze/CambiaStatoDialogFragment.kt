@@ -46,8 +46,7 @@ class CambiaStatoDialogFragment : DialogFragment() {
                 .replaceFirstChar { ch -> ch.uppercaseChar() }
         }.toTypedArray()
 
-        var selectedIndex = -1
-        selectedIndex = stati.indexOfFirst { it.name == nomeStatoCorrente }
+        var selectedIndex = stati.indexOfFirst { it.name == nomeStatoCorrente }
         if (selectedIndex < 0) selectedIndex = 1
 
         // Usando un ArrayAdapter con un layout built-in per single choice
@@ -71,7 +70,8 @@ class CambiaStatoDialogFragment : DialogFragment() {
                     // Recupera l'esistente, se presente
                     val existingPref = repository.getPreferenzaByEsameAndUser(esame, username)
                     val preferenza = if (existingPref != null) {
-                        Preferenza(existingPref.id, esame, username, statoSelezionato.name)
+                        //Preferenza(existingPref.id, esame, username, statoSelezionato.name)
+                        existingPref.copy(stato = statoSelezionato.name)
                     } else {
                         Preferenza(null, esame, username, statoSelezionato.name)
                     }
@@ -92,4 +92,5 @@ class CambiaStatoDialogFragment : DialogFragment() {
     }
 
 }
+
 

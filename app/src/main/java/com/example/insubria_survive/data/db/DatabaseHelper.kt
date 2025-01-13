@@ -29,7 +29,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                 utente_username TEXT,
                 stato TEXT,
                 UNIQUE (esame_codice, utente_username),
-                FOREIGN KEY(esame_codice) REFERENCES esame(id_esame)
+                FOREIGN KEY(esame_codice) REFERENCES esame(id_esame) ON UPDATE CASCADE
             );
             """
         )
@@ -37,13 +37,13 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS esame")
         db.execSQL("DROP TABLE IF EXISTS preferenze_esame")
+        db.execSQL("DROP TABLE IF EXISTS esame")
         onCreate(db)
     }
 
     companion object {
         private const val DB_NAME = "insubria_survive_1.db"
-        private const val DB_VERSION = 1
+        private const val DB_VERSION = 2
     }
 }

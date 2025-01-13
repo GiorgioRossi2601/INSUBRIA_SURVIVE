@@ -9,3 +9,4 @@ data class Preferenza(
 ){
     constructor() : this("", null, "", "")
 }
+

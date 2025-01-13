@@ -4,3 +4,4 @@ data class EsameConPreferenza(
     val esame: Esame,
     val stato: String
 )
+

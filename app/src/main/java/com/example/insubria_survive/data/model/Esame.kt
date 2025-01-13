@@ -10,5 +10,6 @@ data class Esame(
     val padiglione: String?,
 ) {
     constructor() : this("", "", null, "", "")
-
 }
+
+

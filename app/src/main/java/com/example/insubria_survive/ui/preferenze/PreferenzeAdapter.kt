@@ -7,29 +7,28 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.insubria_survive.R
 import com.example.insubria_survive.data.model.EsameConPreferenza
-import com.example.insubria_survive.data.model.Preferenza
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PreferenzeAdapter(
     private var data: List<EsameConPreferenza>,
     private val onItemClick: (EsameConPreferenza) -> Unit
-) : RecyclerView.Adapter<PreferenzeAdapter.ExamViewHolder>() {
+) : RecyclerView.Adapter<PreferenzeAdapter.EsamiPreferitiViewHolder>() {
 
-    inner class ExamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class EsamiPreferitiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvExamName: TextView = itemView.findViewById(R.id.tvExamName)
         val tvExamDate: TextView = itemView.findViewById(R.id.tvExamDate)
         val tvExamAula: TextView = itemView.findViewById(R.id.tvExamAula)
         val tvExamPadiglione: TextView = itemView.findViewById(R.id.tvExamPadiglione)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EsamiPreferitiViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_preferenza, parent, false)
-        return ExamViewHolder(view)
+        return EsamiPreferitiViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ExamViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: EsamiPreferitiViewHolder, position: Int) {
         val item = data[position]
         holder.tvExamName.text = item.esame.corso ?: "Esame non disponibile"
 
@@ -51,7 +50,7 @@ class PreferenzeAdapter(
         // Se il layout radice del layout item è il CardView, ad esempio:
         holder.itemView.setBackgroundColor(backgroundColor)
 
-
+        // Click sul singolo item
         holder.itemView.setOnClickListener {
             onItemClick(item)
         }
@@ -59,8 +58,8 @@ class PreferenzeAdapter(
 
     override fun getItemCount(): Int = data.size
 
-    fun updatePreferenze(newData: List<EsameConPreferenza>) {
-        data = newData
+    fun updatePreferenze(listaEsamiPreferiti: List<EsameConPreferenza>) {
+        data = listaEsamiPreferiti
         notifyDataSetChanged()
     }
 }

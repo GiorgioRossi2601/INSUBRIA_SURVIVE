@@ -4,6 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.insubria_survive.data.db.LocalDbRepository
 
+/**
+ * Factory per la creazione del preferenzeViewModel.
+ *
+ * Permette di passare al ViewModel il repository e l'username dell'utente.
+ */
 class PreferenzeViewModelFactory(
     private val repository: LocalDbRepository,
     private val username: String

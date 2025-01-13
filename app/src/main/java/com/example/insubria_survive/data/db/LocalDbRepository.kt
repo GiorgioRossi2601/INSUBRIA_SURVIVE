@@ -19,7 +19,7 @@ class LocalDbRepository(context: Context) {
     // Istanza di DatabaseHelper per gestire l'accesso al DB
     private val dbHelper = DatabaseHelper(context)
 
-    // TAG per i log
+    // Tag per il logging
     companion object {
         private const val TAG = "LocalDbRepository"
     }

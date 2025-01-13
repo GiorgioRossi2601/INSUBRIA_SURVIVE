@@ -69,6 +69,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
     }
 
     companion object {
+        // Tag per il logging
         private const val TAG = "DatabaseHelper"
         // Nome del file del database e versione. Cambiando la versione verrà invocato onUpgrade.
         private const val DB_NAME = "insubria_survive_1.db"

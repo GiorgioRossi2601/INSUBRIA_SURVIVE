@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -16,30 +17,34 @@ import com.example.insubria_survive.data.model.Stato
 import com.example.insubria_survive.databinding.FragmentEsamiBinding
 import com.example.insubria_survive.ui.preferenze.CambiaStatoDialogFragment
 
+/**
+ * Fragment per la visualizzazione degli esami.
+ */
 class EsamiFragment : Fragment() {
 
-    private var _binding: FragmentEsamiBinding? = null
+    // Tag per il logging
+    companion object {
+        private const val TAG = "EsamiFragment"
+    }
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // Binding per il layout del Fragment
+    private var _binding: FragmentEsamiBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var esamiAdapter: EsamiAdapter
     private lateinit var esamiViewModel: EsamiViewModel
 
-    // Ottieni lo shared view model in ambito Activity
-    private val sharedEsameViewModel: SharedEsameViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        println("Inizializzazione EsamiFragment")
+        Log.d(TAG, "onCreateView: inizializzazione del fragment")
+
+        // Inizializzazione del repository locale e del ViewModel tramite factory
         val repository = LocalDbRepository(requireContext())
         val factory = EsamiViewModelFactory(repository)
-        esamiViewModel =
-            ViewModelProvider(this, factory).get(EsamiViewModel::class.java)
+        esamiViewModel = ViewModelProvider(this, factory).get(EsamiViewModel::class.java)
 
         _binding = FragmentEsamiBinding.inflate(inflater, container, false)
 
@@ -49,6 +54,9 @@ class EsamiFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Configura il RecyclerView e l'adapter per la lista di esami.
+     */
     private fun setupRecyclerView() {
         esamiAdapter = EsamiAdapter(emptyList()) { esame ->
             showEsameStatusDialog(esame)
@@ -57,15 +65,19 @@ class EsamiFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = esamiAdapter
         }
+        Log.d(TAG, "RecyclerView configurato correttamente")
     }
 
+    /**
+     * Osserva le modifiche alla lista di esami e aggiorna l'UI di conseguenza.
+     */
     private fun observeViewModel() {
         esamiViewModel.esamiList.observe(viewLifecycleOwner) { esami ->
             if (!esami.isNullOrEmpty()) {
-                println("Esami caricati nel Fragment: ${esami.size}")
+                Log.d(TAG, "Esami caricati: ${esami.size}")
                 esamiAdapter.updateData(esami)
             } else {
-                println("Lista esami vuota.")
+                Log.d(TAG, "Lista esami vuota")
                 Toast.makeText(requireContext(), "Nessun esame trovato.", Toast.LENGTH_SHORT).show()
             }
         }
@@ -74,18 +86,26 @@ class EsamiFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        Log.d(TAG, "onDestroyView: binding nulled")
     }
 
-    private fun EsamiFragment.showEsameStatusDialog(esame: Esame) {
+    /**
+     * Mostra il dialog per la modifica dello stato dell'esame, basandosi sulla preferenza salvata.
+     *
+     * @param esame L'esame selezionato.
+     */
+    private fun showEsameStatusDialog(esame: Esame) {
+        Log.d(TAG, "Mostro dialog per lo stato dell'esame: ${esame.id}")
+
         val repository = LocalDbRepository(requireContext())
-        val username = LoginRepository.user?.username.toString()
+        // Ottiene l'username dell'utente loggato (se disponibile)
+        val username = LoginRepository.user?.username.orEmpty()
         // Recupera la preferenza esistente, se presente
         val preferenza = repository.getPreferenzaByEsameAndUser(esame.id, username)
         val statoCorrente = preferenza?.stato?.let { Stato.valueOf(it) } ?: Stato.IN_FORSE
+
+        // Mostra il dialog con lo stato corrente
         val dialog = CambiaStatoDialogFragment.newInstance(esame, statoCorrente)
         dialog.show(parentFragmentManager, "CambiaStatoDialogFragment")
-
     }
 }
-
-

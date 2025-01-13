@@ -105,7 +105,7 @@ class CambiaStatoDialogFragment : DialogFragment() {
                     preferenzeViewModel.loadPreferenze()
 
                     // Mostra un Toast informativo all'utente
-                    val message = "L'utente $username ha scelto lo stato ${statoSelezionato.name} per l'esame $esameId"
+                    val message = "Preferenza aggiunta con successo! Stato: ${statoSelezionato.name.replace("_", " ").uppercase(Locale.getDefault())}"
                     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
                 }
                 dialog.dismiss()

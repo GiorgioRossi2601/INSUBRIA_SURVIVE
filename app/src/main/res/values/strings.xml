@@ -20,7 +20,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">ACCEDI</string>
     <string name="action_sign_in_short">accedi</string>
-    <string name="welcome">"Benvenuto!"</string>
+    <string name="welcome">Ciao </string>
     <string name="invalid_username">Username non valido</string>
     <string name="invalid_password">La password deve avere almeno 6 caratteri</string>
     <string name="login_failed">"ACCESSO NEGATO"</string>

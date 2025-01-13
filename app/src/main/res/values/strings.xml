@@ -25,6 +25,9 @@
     <string name="invalid_password">La password deve avere almeno 6 caratteri</string>
     <string name="login_failed">"ACCESSO NEGATO"</string>
 
-    <string name="bt_preferenze">Preferenza</string>"
+    <string name="bt_preferenze">Preferenza</string>
+    <string name="da_fare">DA FARE</string>
+    <string name="in_forse">IN FORSE</string>
+    <string name="non_fare">NON FARE</string>"
 
 </resources>

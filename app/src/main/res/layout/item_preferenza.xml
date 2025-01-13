@@ -4,9 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:cardElevation="4dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    android:background="@drawable/item_border">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         tools:context=".ui.preferenze.PreferenzeFragment"
@@ -31,7 +35,7 @@
             android:id="@+id/tvExamDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Data: "
+            android:textStyle="bold"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvExamName"
@@ -42,6 +46,7 @@
             android:id="@+id/tvExamAula"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvExamDate"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -51,7 +56,7 @@
             android:id="@+id/tvExamPadiglione"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Padiglione: "
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvExamAula"
             app:layout_constraintEnd_toEndOf="parent" />

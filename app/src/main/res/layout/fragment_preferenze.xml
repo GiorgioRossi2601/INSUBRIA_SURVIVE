@@ -11,54 +11,90 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:gravity="center_horizontal">
 
         <!-- Titolo e RecyclerView per gli Esami "DA_FARE" -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Da Fare"
+            android:text="@string/da_fare"
             android:textStyle="bold"
             android:textSize="18sp"
             android:paddingBottom="8dp"
-            android:textColor="@color/colorDaFare"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvDaFare"
+            android:textColor="@color/black" />
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false" />
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp"
+            android:background="@drawable/item_border">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvDaFare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:background="@color/colorDaFare" />
+        </androidx.cardview.widget.CardView>
 
         <!-- Titolo e RecyclerView per gli Esami "IN_FORSE" -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="In Forse"
+            android:text="@string/in_forse"
             android:textStyle="bold"
             android:textSize="18sp"
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
-            android:textColor="@color/colorInForse" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvInForse"
+            android:textColor="@color/black" />
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false" />
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp"
+            android:background="@drawable/item_border">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvInForse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:background="@color/colorInForse" />
+        </androidx.cardview.widget.CardView>
 
         <!-- Titolo e RecyclerView per gli Esami "NON_FARE" -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Non Fare"
+            android:text="@string/non_fare"
             android:textStyle="bold"
             android:textSize="18sp"
-            android:textColor="@color/colorNonFare"
+            android:textColor="@color/black"
             android:paddingTop="16dp"
             android:paddingBottom="8dp" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvNonFare"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false" />
-
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp"
+            android:background="@drawable/item_border">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvNonFare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:background="@color/colorNonFare" />
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

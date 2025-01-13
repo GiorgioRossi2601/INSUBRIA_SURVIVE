@@ -76,7 +76,7 @@ class EsamiFragment : Fragment() {
         _binding = null
     }
 
-    private fun showEsameStatusDialog(esame: Esame) {
+    private fun EsamiFragment.showEsameStatusDialog(esame: Esame) {
         val repository = LocalDbRepository(requireContext())
         val username = LoginRepository.user?.username.toString()
         // Recupera la preferenza esistente, se presente

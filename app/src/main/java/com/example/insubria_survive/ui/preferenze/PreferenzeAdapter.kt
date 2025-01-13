@@ -36,19 +36,19 @@ class PreferenzeAdapter(
         val formattedDate = item.esame.data?.toDate()?.let { date ->
             SimpleDateFormat("dd MMM yyyy - HH:mm", Locale.getDefault()).format(date)
         } ?: "Data non disponibile"
-        holder.tvExamDate.text = "Data: $formattedDate"
+        holder.tvExamDate.text = "${formattedDate}" ?: "Data non disponibile"
 
-        holder.tvExamAula.text = "Aula: ${item.esame.aula ?: "N/D"}"
-        holder.tvExamPadiglione.text = "Padiglione: ${item.esame.padiglione ?: "N/D"}"
+        holder.tvExamAula.text = "${item.esame.aula}" ?: "Aula non disponibile"
+        holder.tvExamPadiglione.text = "Padiglione ${item.esame.padiglione ?: "N/D"}"
 
         // Imposta lo sfondo del container in base allo stato
-        val backgroundColor = when (item.stato) {
+        /*val backgroundColor = when (item.stato) {
             "DA_FARE" -> holder.itemView.context.getColor(R.color.colorDaFare)  // definito in colors.xml
             "NON_FARE" -> holder.itemView.context.getColor(R.color.colorNonFare)
             else -> holder.itemView.context.getColor(R.color.colorInForse)
         }
         // Se il layout radice del layout item è il CardView, ad esempio:
-        holder.itemView.setBackgroundColor(backgroundColor)
+        holder.itemView.setBackgroundColor(backgroundColor)*/
 
         // Click sul singolo item
         holder.itemView.setOnClickListener {

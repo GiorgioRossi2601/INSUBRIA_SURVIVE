@@ -32,7 +32,7 @@ class CambiaStatoDialogFragment : DialogFragment() {
     }
 
     // Ottieni lo shared view model (activity-scoped)
-    private val sharedEsameViewModel: SharedEsameViewModel by activityViewModels()
+    private val preferenzeViewModel: preferenzeViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val esame = arguments?.getString(ARG_ESAME_ID) ?: ""
@@ -77,12 +77,14 @@ class CambiaStatoDialogFragment : DialogFragment() {
                     }
 
                     repository.insertOrUpdatePreferenza(preferenza)
-                    sharedEsameViewModel.setStatoEsame(statoSelezionato)
+
+                    preferenzeViewModel.loadPreferenze()
 
                     // Mostra il messaggio informativo:
                     val message = "L'utente $username ha scelto lo stato ${statoSelezionato.name} per l'esame ${esame}"
                     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
 
+                    dialog.dismiss()
                 }
             }
             .setNegativeButton("Annulla") { dialog, _ ->

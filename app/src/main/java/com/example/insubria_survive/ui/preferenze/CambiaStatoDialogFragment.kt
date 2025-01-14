@@ -43,8 +43,12 @@ class CambiaStatoDialogFragment : DialogFragment() {
         }
     }
 
-    // Ottiene lo shared ViewModel (con scope Activity) per aggiornare le preferenze
-    private val preferenzeViewModel: preferenzeViewModel by activityViewModels()
+    private val preferenzeViewModel: preferenzeViewModel by activityViewModels {
+        // Creazione della factory con il repository e l'username
+        val repository = LocalDbRepository(requireContext())
+        val username = LoginRepository.user?.username.orEmpty()
+        PreferenzeViewModelFactory(repository, username)
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Estrae dall'argomento l'id dell'esame e lo stato corrente (default "IN_FORSE")

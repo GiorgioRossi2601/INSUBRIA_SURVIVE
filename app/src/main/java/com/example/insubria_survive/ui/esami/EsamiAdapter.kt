@@ -22,9 +22,28 @@ class EsamiAdapter(
     private val onEsameStatusClick: (Esame) -> Unit
 ) : RecyclerView.Adapter<EsamiAdapter.EsameViewHolder>() {
 
+    interface onItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
     // Tag per il logging
     companion object {
         private const val TAG = "EsamiAdapter"
+    }
+
+    private var listener: onItemClickListener?=null
+
+    fun setOnItemClickListener(listener: onItemClickListener){
+        this.listener=listener
+    }
+    /**
+     * Restituisce l'esame presente in una determinata posizione.
+     *
+     * @param position La posizione dell'item all'interno della lista.
+     * @return L'oggetto Esame corrispondente.
+     */
+    fun getEsameAt(position: Int): Esame {
+        return esami[position]
     }
 
     /**
@@ -67,9 +86,17 @@ class EsamiAdapter(
             Log.d(TAG, "Click su preferenze per esame: ${esame.id}")
             onEsameStatusClick(esame)
         }
+
+        // Gestione click sull'intero item
+        holder.itemView.setOnClickListener {
+            // Verifica che listener non sia null e passa la posizione
+            Log.d(TAG, "Click sull'item a posizione $position")
+            listener?.onItemClick(position)
+        }
     }
 
     override fun getItemCount(): Int = esami.size
+
 
     /**
      * Aggiorna la lista degli esami e notifica il RecyclerView.

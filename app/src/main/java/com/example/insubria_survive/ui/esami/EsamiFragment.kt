@@ -66,6 +66,21 @@ class EsamiFragment : Fragment() {
             adapter = esamiAdapter
         }
         Log.d(TAG, "RecyclerView configurato correttamente")
+
+        // Imposta il listener per il click sull'intero item della RecyclerView
+        esamiAdapter.setOnItemClickListener(object : EsamiAdapter.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                // Utilizzo del metodo getEsameAt per recuperare direttamente l'Esame
+                val esameSelezionato = esamiAdapter.getEsameAt(position)
+                Toast.makeText(
+                    requireContext(),
+                    "Hai cliccato sull'item: ${esameSelezionato.corso}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                Log.d(TAG, "Click sull'item: ${esameSelezionato.id}")
+                // Eventuali ulteriori azioni (es. navigazione o aggiornamenti)
+            }
+        })
     }
 
     /**

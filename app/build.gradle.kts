@@ -63,4 +63,5 @@ dependencies {
     // Per l'autenticazione con gli account Google (OAuth 2.0)
     implementation ("com.google.android.gms:play-services-auth:21.3.0")
 
+
 }

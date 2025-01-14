@@ -38,6 +38,13 @@ android {
         viewBinding = true
         //dataBinding = true
     }
+    packaging {
+        resources {
+            // Escludi il file duplicato
+            excludes += "META-INF/INDEX.LIST"
+            excludes += "META-INF/DEPENDENCIES"
+        }
+    }
 }
 
 dependencies {
@@ -62,6 +69,26 @@ dependencies {
 
     // Per l'autenticazione con gli account Google (OAuth 2.0)
     implementation ("com.google.android.gms:play-services-auth:21.3.0")
+
+    // --- Dipendenze per la Google Calendar API ---
+    // Google Calendar API (utilizza una versione disponibile, ad esempio la seguente)
+    implementation("com.google.apis:google-api-services-calendar:v3-rev20241101-2.0.0") {
+        exclude (group = "org.apache.httpcomponents")
+    }
+
+    // HTTP Client e Json Factory
+    implementation("com.google.http-client:google-http-client-android:1.41.5")
+    implementation("com.google.http-client:google-http-client-gson:1.41.5")
+
+
+    configurations.all {
+        resolutionStrategy {
+            force("io.grpc:grpc-okhttp:1.51.0")
+            force("io.grpc:grpc-core:1.51.0")
+            force("io.grpc:grpc-api:1.51.0")
+            force("io.grpc:grpc-context:1.51.0")
+        }
+    }
 
 
 }

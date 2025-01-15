@@ -55,7 +55,7 @@ class LocalDbRepository(context: Context) {
         Log.d(TAG, "Inserimento esame: $contentValues")
         // Inserimento o aggiornamento in caso di conflitto (replace)
         db.insertWithOnConflict("esame", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)
-        db.close()
+        //db.close()
         Log.d(TAG, "Operazione completata: esame salvato con successo.")
     }
 
@@ -94,7 +94,7 @@ class LocalDbRepository(context: Context) {
             Log.d(TAG, "Nessun esame trovato nella tabella 'esame'.")
         }
         cursor.close()
-        db.close()
+        //db.close()
         Log.d(TAG, "Recuperati ${esamiList.size} esami dalla tabella 'esame'.")
         return esamiList
     }
@@ -128,7 +128,7 @@ class LocalDbRepository(context: Context) {
             contentValues,
             SQLiteDatabase.CONFLICT_REPLACE
         )
-        db.close()
+        //db.close()
         Log.d(TAG, "Operazione completata: preferenza salvata con successo.")
     }
 
@@ -165,7 +165,7 @@ class LocalDbRepository(context: Context) {
             Log.d(TAG, "Nessuna preferenza trovata per stato='$stato' e utente='$username'.")
         }
         cursor.close()
-        db.close()
+        //db.close()
         Log.d(TAG, "Recuperate ${preferenzeList.size} preferenze per stato='$stato' e utente='$username'.")
         return preferenzeList
     }
@@ -200,7 +200,7 @@ class LocalDbRepository(context: Context) {
             Log.d(TAG, "Nessuna preferenza trovata per esameCodice='$esameCodice' e utente='$username'.")
         }
         cursor.close()
-        db.close()
+        //db.close()
         return preferenza
     }
 

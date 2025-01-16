@@ -199,8 +199,7 @@ class EsamiFragment : Fragment() {
                 ).show()
                 Log.d(TAG, "Click sull'item: ${esameSelezionato.id}")
                 // Eventuali ulteriori azioni (es. navigazione o aggiornamenti)
-                // Al click sull'item, gestiamo il login (se necessario) e poi l'inserimento dell'evento nel calendario
-                handleExamClick(esameSelezionato)
+                showConfermaAggiuntaCalendario(esameSelezionato)
             }
 
         })
@@ -246,4 +245,22 @@ class EsamiFragment : Fragment() {
         val dialog = CambiaStatoDialogFragment.newInstance(esame, statoCorrente)
         dialog.show(parentFragmentManager, "CambiaStatoDialogFragment")
     }
+
+    private fun showConfermaAggiuntaCalendario(esame: Esame) {
+        Log.d(TAG, "Mostro dialog per la conferma del salvataggio dell'evento su calendario: ${esame.id}")
+
+        // Mostra il dialog con lo stato corrente
+        val dialog = ConfirmAddEventDialogFragment()
+        dialog.callback = { dialogResult ->
+            // Al click sull'item, gestiamo il login (se necessario) e poi l'inserimento dell'evento nel calendario
+            if (dialogResult == "si")
+                handleExamClick(esame)
+            else{
+                Toast.makeText(requireContext(), "Operazione annullata", Toast.LENGTH_SHORT).show()
+            }
+        }
+        dialog.show(parentFragmentManager, "CambiaStatoDialogFragment")
+    }
+
+
 }

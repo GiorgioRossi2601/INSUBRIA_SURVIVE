@@ -1,6 +1,7 @@
 package com.example.insubria_survive.data.model
 
 import com.google.firebase.Timestamp
+import java.io.Serializable
 
 /**
  * Data class che rappresenta un Esame.
@@ -17,7 +18,7 @@ data class Esame(
     var data: Timestamp?,
     val aula: String?,
     val padiglione: String?,
-) {
+) : Serializable {
     /**
      * Costruttore di default richiesto, per esempio dalla serializzazione/deserializzazione.
      * Inizializza le proprietà con valori di default.

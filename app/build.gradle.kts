@@ -77,8 +77,10 @@ dependencies {
     }
 
     // HTTP Client e Json Factory
-    implementation("com.google.http-client:google-http-client-android:1.41.5")
-    implementation("com.google.http-client:google-http-client-gson:1.41.5")
+    implementation("com.google.http-client:google-http-client-android:1.45.3")
+    implementation("com.google.http-client:google-http-client-gson:1.45.3")
+    implementation("com.google.api-client:google-api-client-android:2.7.1")
+    implementation("com.google.api-client:google-api-client-gson:2.7.1")
 
 
     configurations.all {

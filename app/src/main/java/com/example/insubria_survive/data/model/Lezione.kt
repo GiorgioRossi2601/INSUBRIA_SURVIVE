@@ -5,5 +5,6 @@ data class Lezione(
     val corso: String?,
     val data_inizio: String?,
     val data_fine: String?,
+    val aula: String?,
     val padiglione: String?
 )

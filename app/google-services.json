@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "514391608735-qvdoosilrs2p6ohkn8o3qp9edouuoh10.apps.googleusercontent.com",
+          "client_id": "514391608735-6i5eu3ksikmu29hp3gpkuu2711lkdhd9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.insubria_survive",
-            "certificate_hash": "57af8ded8a9ac02619e2dbf7c091573dbd0dc25d"
+            "certificate_hash": "a4ba95e5d9bef8d6f3c3b019987a7b32e68b25b0"
           }
         },
         {

@@ -15,6 +15,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.insubria_survive.data.LoginRepository
 import com.example.insubria_survive.databinding.ActivityMainBinding
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.security.ProviderInstaller
 import com.google.android.material.navigation.NavigationView
 
 /**
@@ -80,10 +84,20 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         Log.d(TAG, "onCreate: Configurazione completata")
+        try {
+            ProviderInstaller.installIfNeeded(this)
+        } catch (e: GooglePlayServicesRepairableException) {
+            Log.w("ProviderInstaller", "Google Play Services necessitano di aggiornamento.", e)
+            GoogleApiAvailability.getInstance().getErrorDialog(this, e.connectionStatusCode, 0)?.show()
+        } catch (e: GooglePlayServicesNotAvailableException) {
+            Log.w("ProviderInstaller", "Google Play Services non supportati.", e)
+            e.printStackTrace()
+        }
+        Log.d(TAG, "onCreate: Configurazione completata xdvr")
     }
 
     /**
-     * Infla il menu della ActionBar.
+     *  menu della ActionBar.
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate del menu: aggiunge elementi alla ActionBar se presente

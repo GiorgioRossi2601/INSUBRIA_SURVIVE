@@ -16,6 +16,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.services.calendar.CalendarScopes
 import com.example.insubria_survive.calendario.CalendarManager
+import com.example.insubria_survive.data.db.LocalDbRepository
+import com.example.insubria_survive.data.model.Lezione
 import java.util.*
 
 class LezioniFragment : Fragment() {
@@ -38,7 +40,7 @@ class LezioniFragment : Fragment() {
         val factory = LezioniViewModelFactory(requireContext())
         viewModel = ViewModelProvider(this, factory).get(LezioniViewModel::class.java)
 
-        // Configura RecyclerView e passa la callback per il click sul bottone Calendario
+        // Configura RecyclerView e la callback per il click sul bottone Calendario
         binding.recyclerLezioni.layoutManager = LinearLayoutManager(requireContext())
         adapter = LezioniAdapter { lesson ->
             handleCalendarioClick(lesson)
@@ -53,19 +55,21 @@ class LezioniFragment : Fragment() {
         // Recupera le lezioni da Firebase e salva nel DB locale
         fetchLessonsFromFirebase()
 
-        // Filtraggio per settimana tramite CalendarView
+        // Gestione del cambio di data nel CalendarView: estrae settimana e anno dalla data selezionata
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            val cal = Calendar.getInstance().apply { set(year, month, dayOfMonth) }
-            val weekNumber = cal.get(Calendar.WEEK_OF_YEAR)
-            Log.d(TAG, "Data selezionata: ${year}-${month+1}-${dayOfMonth}, Settimana: $weekNumber")
-            viewModel.loadLezioni(weekFilter = weekNumber)
+            val cal = Calendar.getInstance(Locale.getDefault()).apply { set(year, month, dayOfMonth) }
+            val selectedWeek = cal.get(Calendar.WEEK_OF_YEAR)
+            val selectedYear = cal.get(Calendar.YEAR)
+            Log.d(TAG, "Data selezionata: ${year}-${month + 1}-${dayOfMonth}, Settimana: $selectedWeek, Anno: $selectedYear")
+            viewModel.loadLezioni(weekFilter = selectedWeek, yearFilter = selectedYear)
         }
 
-        // Carica tutte le lezioni al primo avvio (senza filtro)
+        // Di default, carica la vista della settimana corrente (con anno corrente)
         viewModel.loadLezioni()
 
         return binding.root
     }
+
 
     /**
      * Recupera le lezioni da Firebase e le salva nel DB locale.
@@ -76,7 +80,7 @@ class LezioniFragment : Fragment() {
             .get()
             .addOnSuccessListener { querySnapshot ->
                 Log.d(TAG, "Recuperate ${querySnapshot.size()} lezioni da Firebase.")
-                val repository = com.example.insubria_survive.data.db.LocalDbRepository(requireContext())
+                val repository = LocalDbRepository(requireContext())
                 for (doc in querySnapshot.documents) {
                     val lezione = doc.toObject(com.example.insubria_survive.data.model.Lezione::class.java)
                     lezione?.let { it.id = doc.id }
@@ -96,13 +100,18 @@ class LezioniFragment : Fragment() {
      * Mostra un dialog di conferma; se l'utente sceglie "Si", viene invocato il metodo per
      * aggiungere l’evento nel calendario.
      */
-    private fun handleCalendarioClick(lesson: com.example.insubria_survive.data.model.Lezione) {
+    private fun handleCalendarioClick(lesson: Lezione) {
         val dialog = ConfirmAddEventDialogFragment()
         dialog.callback = { result ->
             if (result == "si") {
                 addLessonToCalendar(lesson)
             } else {
                 Log.d(TAG, "L'utente ha annullato l'aggiunta dell'evento al calendario.")
+                Toast.makeText(
+                    requireContext(),
+                    "Operazione annullata!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         dialog.show(parentFragmentManager, "ConfirmAddEventDialogFragment")
@@ -147,6 +156,7 @@ class LezioniFragment : Fragment() {
                 "Devi effettuare il login Google per salvare l'evento.",
                 Toast.LENGTH_SHORT
             ).show()
+
         }
     }
 

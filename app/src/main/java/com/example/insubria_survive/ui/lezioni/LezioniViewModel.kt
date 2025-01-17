@@ -8,8 +8,10 @@ import com.example.insubria_survive.data.db.LocalDbRepository
 import com.example.insubria_survive.data.model.Lezione
 import com.example.insubria_survive.data.model.LezioniListItem
 import com.example.insubria_survive.data.model.LezioniListItem.LessonItem
+import com.example.insubria_survive.data.model.LezioniListItem.NoLessonItem
 import com.example.insubria_survive.data.model.LezioniListItem.WeekHeader
 import com.google.firebase.Timestamp
+import java.text.SimpleDateFormat
 import java.util.*
 
 class LezioniViewModel(private val context: Context) : ViewModel() {
@@ -19,41 +21,84 @@ class LezioniViewModel(private val context: Context) : ViewModel() {
 
     /**
      * Carica le lezioni dal DB locale e raggruppa per settimana.
-     * Se weekFilter è diverso da -1, viene applicato un filtro per mantenere solo le lezioni della settimana indicata.
+     *
+     * Di default viene utilizzata la settimana e l'anno correnti.
+     * Per ogni settimana genera un header nel formato "dd/MM/yyyy - dd/MM/yyyy".
+     *
+     * Se per quella settimana non sono presenti lezioni, viene aggiunto l’item NoLessonItem.
+     *
+     * @param weekFilter se non nullo, utilizza questo numero di settimana; altrimenti usa la settimana corrente.
+     * @param yearFilter se non nullo, utilizza questo anno; altrimenti usa l'anno corrente.
      */
-    fun loadLezioni(weekFilter: Int = -1) {
+    fun loadLezioni(weekFilter: Int? = null, yearFilter: Int? = null) {
+        val calendar = Calendar.getInstance(Locale.getDefault())
+        val currentWeek = calendar.get(Calendar.WEEK_OF_YEAR)
+        val currentYear = calendar.get(Calendar.YEAR)
+        val filterWeek = weekFilter ?: currentWeek
+        val filterYear = yearFilter ?: currentYear
+
         val repository = LocalDbRepository(context)
-        // Recupera tutte le lezioni ordinate per data di inizio
-        val lezioni: List<Lezione> = repository.getAllLezioni()
+        val lessons: List<Lezione> = repository.getAllLezioni()
             .sortedBy { it.data_inizio?.toDate() }
 
-        // Se è stato applicato un filtro per settimana, filtra le lezioni
-        val filteredLezioni = if (weekFilter != -1) {
-            lezioni.filter { lezione ->
-                lezione.data_inizio?.let { getWeekOfYear(it) } == weekFilter
-            }
-        } else {
-            lezioni
+        // Filtra le lezioni in base a settimana e anno
+        val filteredLessons = lessons.filter { lesson ->
+            val calLesson = Calendar.getInstance(Locale.getDefault())
+            calLesson.time = lesson.data_inizio?.toDate() ?: Date()
+            val lessonWeek = calLesson.get(Calendar.WEEK_OF_YEAR)
+            val lessonYear = calLesson.get(Calendar.YEAR)
+            (lessonWeek == filterWeek) && (lessonYear == filterYear)
         }
 
-        // Raggruppa le lezioni per settimana
-        val grouped = filteredLezioni.groupBy { lezione ->
-            lezione.data_inizio?.let { getWeekOfYear(it) } ?: -1
-        }.toSortedMap()
-
-        // Crea una lista alternata: header della settimana seguito dalle lezioni
+        // Costruiamo l'header della settimana usando il filterYear e filterWeek
+        val (monday, sunday) = getWeekRange(filterYear, filterWeek)
+        val headerTitle = "${formatDate(monday)} - ${formatDate(sunday)}"
         val listItems = mutableListOf<LezioniListItem>()
-        for ((weekNumber, lessons) in grouped) {
-            val headerTitle = if (weekNumber != -1) "Settimana $weekNumber" else "Data non disponibile"
-            listItems.add(WeekHeader(headerTitle))
-            lessons.forEach { lesson ->
+        listItems.add(WeekHeader(headerTitle))
+        if (filteredLessons.isEmpty()) {
+            listItems.add(NoLessonItem)
+        } else {
+            filteredLessons.forEach { lesson ->
                 listItems.add(LessonItem(lesson))
             }
         }
         _lessonsListItems.postValue(listItems)
     }
 
-    // Estrae il numero della settimana da un Timestamp
+
+    /**
+     * Calcola il range della settimana (lunedì e domenica) per un certo anno e numero di settimana.
+     */
+    private fun getWeekRange(year: Int, weekOfYear: Int): Pair<Date, Date> {
+        val calendar = Calendar.getInstance(Locale.getDefault())
+        // Pulizia dei campi
+        calendar.clear()
+        // Imposta l'anno e la settimana (usando il primo giorno della settimana come lunedì)
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.WEEK_OF_YEAR, weekOfYear)
+        calendar.firstDayOfWeek = Calendar.MONDAY
+        // Imposta lunedì
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        val monday = calendar.time
+
+        // Imposta domenica
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+        val sunday = calendar.time
+
+        return Pair(monday, sunday)
+    }
+
+    /**
+     * Formattta una data nel formato "dd/MM/yyyy".
+     */
+    private fun formatDate(date: Date): String {
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        return sdf.format(date)
+    }
+
+    /**
+     * Metodo già presente per ottenere il numero della settimana da un Timestamp.
+     */
     private fun getWeekOfYear(timestamp: Timestamp): Int {
         val calendar = Calendar.getInstance(Locale.getDefault())
         calendar.time = timestamp.toDate()

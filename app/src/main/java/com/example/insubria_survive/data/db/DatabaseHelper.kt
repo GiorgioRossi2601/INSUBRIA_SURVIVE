@@ -30,7 +30,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                 aula TEXT,
                 padiglione TEXT
             );
-            """
+            """.trimIndent()
         Log.d(TAG, "Esecuzione SQL per la creazione della tabella 'esame': $createEsameTable")
         db.execSQL(createEsameTable)
 
@@ -45,9 +45,22 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                 UNIQUE (esame_codice, utente_username),
                 FOREIGN KEY(esame_codice) REFERENCES esame(id_esame) ON UPDATE CASCADE
             );
-            """
+            """.trimIndent()
         Log.d(TAG, "Esecuzione SQL per la creazione della tabella 'preferenze_esame': $createPreferenzeTable")
         db.execSQL(createPreferenzeTable)
+
+        val createLezioneTable = """
+            CREATE TABLE IF NOT EXISTS lezione (
+                id_lezione TEXT PRIMARY KEY,
+                corso TEXT,
+                data_inizio TEXT,
+                data_fine TEXT,
+                aula TEXT,
+                padiglione TEXT
+            );
+            """.trimIndent()
+        Log.d(TAG, "Esecuzione SQL per la creazione della tabella 'lezione': $createLezioneTable")
+        db.execSQL(createLezioneTable)
     }
 
     /**
@@ -63,6 +76,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         // Eliminazione delle tabelle esistenti (drop & create)
         db.execSQL("DROP TABLE IF EXISTS preferenze_esame")
         db.execSQL("DROP TABLE IF EXISTS esame")
+        db.execSQL("DROP TABLE IF EXISTS lezione")
+
         // Ricreazione del database
         onCreate(db)
         Log.d(TAG, "Upgrade completato: tabelle eliminate e ricreate con successo.")
@@ -73,6 +88,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         private const val TAG = "DatabaseHelper"
         // Nome del file del database e versione. Cambiando la versione verrà invocato onUpgrade.
         private const val DB_NAME = "insubria_survive_1.db"
-        private const val DB_VERSION = 2
+        private const val DB_VERSION = 4
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.example.insubria_survive.data.model.Esame
+import com.example.insubria_survive.data.model.Lezione
 import com.example.insubria_survive.data.model.Preferenza
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
@@ -38,16 +39,11 @@ class LocalDbRepository(context: Context) {
         // Apertura del database in modalità scrittura
         val db: SQLiteDatabase = dbHelper.writableDatabase
 
-        // Conversione della data da Timestamp a Stringa usando il formato "yyyy-MM-dd HH:mm"
-        val dataString = esame.data?.toDate()?.let { date ->
-            SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date)
-        } ?: ""
-
         // Preparazione dei valori da inserire
         val contentValues = ContentValues().apply {
             put("id_esame", esame.id)
             put("corso", esame.corso)
-            put("data", dataString)
+            put("data", firebaseTimestampToString(esame.data!!))
             put("aula", esame.aula)
             put("padiglione", esame.padiglione)
         }
@@ -204,6 +200,56 @@ class LocalDbRepository(context: Context) {
         return preferenza
     }
 
+    ////////////////////////////////
+    // Gestione tabella "lezione"
+    ////////////////////////////////
+
+    // Inserisce o aggiorna una Lezione nella tabella "lezioni"
+    fun insertOrUpdateLezione(lezione: Lezione) {
+        val db = dbHelper.writableDatabase
+
+        // Preparazione dei valori da inserire
+        Log.d(TAG, "Inserimento/aggiornamento lezione: $lezione")
+
+        val contentValues = ContentValues().apply {
+            put("id_lezione", lezione.id)
+            put("corso", lezione.corso)
+            put("data_inizio", firebaseTimestampToString(lezione.data_inizio!!))
+            put("data_fine", firebaseTimestampToString(lezione.data_fine!!))
+            put("aula", lezione.aula)
+            put("padiglione", lezione.padiglione)
+        }
+
+        Log.d(TAG, "Inserimento/aggiornamento lezione: $contentValues")
+        db.insertWithOnConflict("lezione", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)
+    }
+
+    // Recupera tutte le lezioni salvate
+    fun getAllLezioni(): List<Lezione> {
+        val db = dbHelper.readableDatabase
+        val lessonsList = mutableListOf<Lezione>()
+        val cursor = db.rawQuery("SELECT * FROM lezione", null)
+        Log.d(TAG, "Esecuzione query per recuperare tutte le lezioni.")
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getString(cursor.getColumnIndexOrThrow("id_lezione"))
+                val corso = cursor.getString(cursor.getColumnIndexOrThrow("corso"))
+                val dataInizio = cursor.getString(cursor.getColumnIndexOrThrow("data_inizio"))
+                val dataFine = cursor.getString(cursor.getColumnIndexOrThrow("data_fine"))
+                val aula = cursor.getString(cursor.getColumnIndexOrThrow("aula"))
+                val padiglione = cursor.getString(cursor.getColumnIndexOrThrow("padiglione"))
+
+                val lezione = Lezione(id, corso, stringToTimestamp(dataInizio), stringToTimestamp(dataFine), aula, padiglione)
+                lessonsList.add(lezione)
+            } while (cursor.moveToNext())
+        } else {
+            Log.d(TAG, "Nessuna lezione trovata nella tabella 'lezioni'.")
+        }
+        cursor.close()
+        return lessonsList
+    }
+
     /**
      * Converte una stringa formattata in "yyyy-MM-dd HH:mm" in un oggetto Timestamp (Firebase).
      *
@@ -221,4 +267,15 @@ class LocalDbRepository(context: Context) {
             null
         }
     }
+
+    fun firebaseTimestampToString(timestamp: Timestamp): String {
+        // Converti il Timestamp in oggetto Date
+        val date = timestamp.toDate()
+        // Definisci il formato desiderato
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        // Ritorna la data formattata in stringa
+        return sdf.format(date)
+    }
+
+
 }

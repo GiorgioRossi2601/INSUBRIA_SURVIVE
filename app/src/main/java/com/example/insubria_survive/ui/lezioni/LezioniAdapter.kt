@@ -5,13 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.insubria_survive.data.model.Lezione
 import com.example.insubria_survive.data.model.LezioniListItem
 import com.example.insubria_survive.data.model.LezioniListItem.LessonItem
 import com.example.insubria_survive.data.model.LezioniListItem.WeekHeader
 import com.example.insubria_survive.databinding.ItemLezioniBinding
 import com.example.insubria_survive.databinding.ItemWeekHeaderBinding
+import com.example.insubria_survive.utils.UtilsMethod
 
-class LezioniAdapter : ListAdapter<LezioniListItem, RecyclerView.ViewHolder>(DiffCallback()) {
+class LezioniAdapter(
+    // Lambda chiamata al click sul bottone Calendario dell’item
+    private val onCalendarioClick: (Lezione) -> Unit
+) : ListAdapter<LezioniListItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
         private const val VIEW_TYPE_WEEK_HEADER = 0
@@ -41,7 +46,7 @@ class LezioniAdapter : ListAdapter<LezioniListItem, RecyclerView.ViewHolder>(Dif
                     parent,
                     false
                 )
-                LessonViewHolder(binding)
+                LessonViewHolder(binding, onCalendarioClick)
             }
         }
     }
@@ -60,19 +65,31 @@ class LezioniAdapter : ListAdapter<LezioniListItem, RecyclerView.ViewHolder>(Dif
         }
     }
 
-    class LessonViewHolder(private val binding: ItemLezioniBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class LessonViewHolder(
+        private val binding: ItemLezioniBinding,
+        private val onCalendarioClick: (Lezione) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: LessonItem) {
             binding.tvCorso.text = item.lesson.corso
-            binding.tvDataInizio.text = item.lesson.data_inizio.toString()
+            binding.tvDataInizio.text = item.lesson.data_inizio?.let {
+                UtilsMethod().firebaseTimestampToString(it)
+            } ?: ""
+            binding.tvDataFine.text = item.lesson.data_fine?.let {
+                UtilsMethod().firebaseTimestampToString(it)
+            } ?: ""
             binding.tvAula.text = item.lesson.aula
-            // Altri binding se necessario
+            binding.tvPadiglioneEsame.text = item.lesson.padiglione
+
+            // Click sul bottone Calendario: esegue la callback passata dal Fragment
+            binding.btCalendario.setOnClickListener {
+                onCalendarioClick(item.lesson)
+            }
         }
     }
 
     class DiffCallback : DiffUtil.ItemCallback<LezioniListItem>() {
         override fun areItemsTheSame(oldItem: LezioniListItem, newItem: LezioniListItem): Boolean {
-            // Se possibile, confronta gli ID degli elementi oppure la classe + il contenuto
+            // Confronta gli elementi in base al contenuto (meglio utilizzare un ID se disponibile)
             return oldItem == newItem
         }
 

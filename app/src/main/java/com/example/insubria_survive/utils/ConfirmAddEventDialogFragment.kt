@@ -1,10 +1,9 @@
-package com.example.insubria_survive.ui.esami
+package com.example.insubria_survive.utils
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import com.example.insubria_survive.data.model.Esame
 
 
 class ConfirmAddEventDialogFragment: DialogFragment() {

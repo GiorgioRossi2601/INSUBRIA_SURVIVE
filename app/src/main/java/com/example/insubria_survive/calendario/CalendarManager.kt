@@ -3,6 +3,7 @@ package com.example.insubria_survive.calendario
 import android.content.Context
 import android.util.Log
 import com.example.insubria_survive.data.model.Esame
+import com.example.insubria_survive.data.model.Lezione
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.client.http.HttpTransport
@@ -53,6 +54,23 @@ class CalendarManager(
                 callback(true, createdEvent.htmlLink)
             } catch (e: Exception) {
                 Log.e(TAG, "Errore durante la creazione dell'evento: ${e.message}", e)
+                callback(false, e.message)
+            }
+        }.start()
+    }
+
+    /**
+     * Aggiunge un evento relativo ad una Lezione nel calendario "primary".
+     */
+    fun addLessonToCalendar(lezione: Lezione, callback: (success: Boolean, info: String?) -> Unit) {
+        val event = CalendarHelper.createEventFromLesson(lezione)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val createdEvent: Event = calendarService.events().insert("primary", event).execute()
+                Log.d(TAG, "Evento Lezione creato: ${createdEvent.htmlLink}")
+                callback(true, createdEvent.htmlLink)
+            } catch (e: Exception) {
+                Log.e(TAG, "Errore durante la creazione dell'evento Lezione: ${e.message}", e)
                 callback(false, e.message)
             }
         }.start()

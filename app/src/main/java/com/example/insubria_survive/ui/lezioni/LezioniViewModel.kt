@@ -1,4 +1,3 @@
-// LezioniViewModel.kt
 package com.example.insubria_survive.ui.lezioni
 
 import android.content.Context
@@ -10,7 +9,7 @@ import com.example.insubria_survive.data.model.Lezione
 import com.example.insubria_survive.data.model.LezioniListItem
 import com.example.insubria_survive.data.model.LezioniListItem.LessonItem
 import com.example.insubria_survive.data.model.LezioniListItem.WeekHeader
-import java.text.SimpleDateFormat
+import com.google.firebase.Timestamp
 import java.util.*
 
 class LezioniViewModel(private val context: Context) : ViewModel() {
@@ -18,22 +17,27 @@ class LezioniViewModel(private val context: Context) : ViewModel() {
     private val _lessonsListItems = MutableLiveData<List<LezioniListItem>>()
     val lessonsListItems: LiveData<List<LezioniListItem>> = _lessonsListItems
 
-    init {
-        // Carica automaticamente le lezioni all'avvio del ViewModel
-        loadLezioni()
-    }
-
     /**
-     * Carica le lezioni dal database locale e le raggruppa per settimana.
+     * Carica le lezioni dal DB locale e raggruppa per settimana.
+     * Se weekFilter è diverso da -1, viene applicato un filtro per mantenere solo le lezioni della settimana indicata.
      */
-    fun loadLezioni() {
+    fun loadLezioni(weekFilter: Int = -1) {
         val repository = LocalDbRepository(context)
-        // Recupera tutte le lezioni e le ordina in base alla data_inizio
+        // Recupera tutte le lezioni ordinate per data di inizio
         val lezioni: List<Lezione> = repository.getAllLezioni()
-            .sortedBy { it.data_inizio?.toDate() } // oppure in base alla stringa se hai già la conversione
+            .sortedBy { it.data_inizio?.toDate() }
 
-        // Raggruppa le lezioni per settimana: la settimana viene estratta dalla data_inizio
-        val grouped = lezioni.groupBy { lezione ->
+        // Se è stato applicato un filtro per settimana, filtra le lezioni
+        val filteredLezioni = if (weekFilter != -1) {
+            lezioni.filter { lezione ->
+                lezione.data_inizio?.let { getWeekOfYear(it) } == weekFilter
+            }
+        } else {
+            lezioni
+        }
+
+        // Raggruppa le lezioni per settimana
+        val grouped = filteredLezioni.groupBy { lezione ->
             lezione.data_inizio?.let { getWeekOfYear(it) } ?: -1
         }.toSortedMap()
 
@@ -50,7 +54,7 @@ class LezioniViewModel(private val context: Context) : ViewModel() {
     }
 
     // Estrae il numero della settimana da un Timestamp
-    private fun getWeekOfYear(timestamp: com.google.firebase.Timestamp): Int {
+    private fun getWeekOfYear(timestamp: Timestamp): Int {
         val calendar = Calendar.getInstance(Locale.getDefault())
         calendar.time = timestamp.toDate()
         return calendar.get(Calendar.WEEK_OF_YEAR)

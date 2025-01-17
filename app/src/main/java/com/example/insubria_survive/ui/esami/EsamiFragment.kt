@@ -11,7 +11,6 @@ import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.insubria_survive.calendario.CalendarManager
@@ -21,6 +20,7 @@ import com.example.insubria_survive.data.model.Esame
 import com.example.insubria_survive.data.model.Stato
 import com.example.insubria_survive.databinding.FragmentEsamiBinding
 import com.example.insubria_survive.ui.preferenze.CambiaStatoDialogFragment
+import com.example.insubria_survive.utils.ConfirmAddEventDialogFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

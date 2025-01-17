@@ -1,6 +1,7 @@
 package com.example.insubria_survive.calendario
 
 import com.example.insubria_survive.data.model.Esame
+import com.example.insubria_survive.data.model.Lezione
 import com.google.api.client.util.DateTime
 import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.EventDateTime
@@ -38,6 +39,30 @@ object CalendarHelper {
             .setDateTime(endDateTime)
             .setTimeZone(TimeZone.getDefault().id)
 
+        return event
+    }
+
+    /**
+     * Converte una Lezione in un oggetto Event della Google Calendar API.
+     */
+    fun createEventFromLesson(lezione: Lezione): Event {
+        val event = Event()
+        // Il titolo dell'evento è il nome del corso; se non disponibile, "Lezione"
+        event.summary = lezione.corso ?: "Lezione"
+        // La descrizione include ulteriori informazioni, ad es. aula e padiglione
+        event.description = "Lezione programmata. Aula: ${lezione.aula ?: "ND"}, Padiglione: ${lezione.padiglione ?: "ND"}"
+
+        // L'orario di inizio viene derivato da data_inizio della lezione
+        val startDateTime = getEventDateTime(lezione.data_inizio?.toDate())
+        // Se data_fine è presente nella lezione la utilizziamo, altrimenti aggiungiamo una durata di default
+        val endDateTime = lezione.data_fine?.toDate()?.let { DateTime(it) } ?: calculateEndTime(startDateTime)
+
+        event.start = EventDateTime()
+            .setDateTime(startDateTime)
+            .setTimeZone(TimeZone.getDefault().id)
+        event.end = EventDateTime()
+            .setDateTime(endDateTime)
+            .setTimeZone(TimeZone.getDefault().id)
         return event
     }
 

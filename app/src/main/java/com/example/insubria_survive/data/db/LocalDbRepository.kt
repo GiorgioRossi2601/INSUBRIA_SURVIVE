@@ -7,6 +7,7 @@ import android.util.Log
 import com.example.insubria_survive.data.model.Esame
 import com.example.insubria_survive.data.model.Lezione
 import com.example.insubria_survive.data.model.Preferenza
+import com.example.insubria_survive.utils.UtilsMethod
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -43,7 +44,7 @@ class LocalDbRepository(context: Context) {
         val contentValues = ContentValues().apply {
             put("id_esame", esame.id)
             put("corso", esame.corso)
-            put("data", firebaseTimestampToString(esame.data!!))
+            put("data", UtilsMethod().firebaseTimestampToString(esame.data!!))
             put("aula", esame.aula)
             put("padiglione", esame.padiglione)
         }
@@ -80,7 +81,7 @@ class LocalDbRepository(context: Context) {
                 val esame = Esame(
                     id,
                     corso,
-                    stringToTimestamp(dataStr),
+                    UtilsMethod().stringToTimestamp(dataStr),
                     aula,
                     padiglione
                 )
@@ -214,8 +215,8 @@ class LocalDbRepository(context: Context) {
         val contentValues = ContentValues().apply {
             put("id_lezione", lezione.id)
             put("corso", lezione.corso)
-            put("data_inizio", firebaseTimestampToString(lezione.data_inizio!!))
-            put("data_fine", firebaseTimestampToString(lezione.data_fine!!))
+            put("data_inizio", UtilsMethod().firebaseTimestampToString(lezione.data_inizio!!))
+            put("data_fine", UtilsMethod().firebaseTimestampToString(lezione.data_fine!!))
             put("aula", lezione.aula)
             put("padiglione", lezione.padiglione)
         }
@@ -240,7 +241,7 @@ class LocalDbRepository(context: Context) {
                 val aula = cursor.getString(cursor.getColumnIndexOrThrow("aula"))
                 val padiglione = cursor.getString(cursor.getColumnIndexOrThrow("padiglione"))
 
-                val lezione = Lezione(id, corso, stringToTimestamp(dataInizio), stringToTimestamp(dataFine), aula, padiglione)
+                val lezione = Lezione(id, corso, UtilsMethod().stringToTimestamp(dataInizio), UtilsMethod().stringToTimestamp(dataFine), aula, padiglione)
                 lessonsList.add(lezione)
             } while (cursor.moveToNext())
         } else {
@@ -250,32 +251,7 @@ class LocalDbRepository(context: Context) {
         return lessonsList
     }
 
-    /**
-     * Converte una stringa formattata in "yyyy-MM-dd HH:mm" in un oggetto Timestamp (Firebase).
-     *
-     * @param dateString La stringa da convertire.
-     * @return Timestamp? L'oggetto Timestamp se la conversione ha successo, altrimenti null.
-     */
-    private fun stringToTimestamp(dateString: String): Timestamp? {
-        if (dateString.isEmpty()) return null
-        return try {
-            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-            val date = sdf.parse(dateString)
-            Timestamp(date!!)
-        } catch (e: Exception) {
-            Log.e(TAG, "Errore nella conversione della stringa in Timestamp: $dateString", e)
-            null
-        }
-    }
 
-    fun firebaseTimestampToString(timestamp: Timestamp): String {
-        // Converti il Timestamp in oggetto Date
-        val date = timestamp.toDate()
-        // Definisci il formato desiderato
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-        // Ritorna la data formattata in stringa
-        return sdf.format(date)
-    }
 
 
 }

@@ -252,7 +252,6 @@ class EsamiFragment : Fragment() {
         // Mostra il dialog con lo stato corrente
         val dialog = ConfirmAddEventDialogFragment()
         dialog.callback = { dialogResult ->
-            // Al click sull'item, gestiamo il login (se necessario) e poi l'inserimento dell'evento nel calendario
             if (dialogResult == "si")
                 handleExamClick(esame)
             else{

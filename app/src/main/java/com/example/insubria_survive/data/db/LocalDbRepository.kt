@@ -140,7 +140,10 @@ class LocalDbRepository(context: Context) {
         // Apertura del database in modalità lettura
         val db = dbHelper.readableDatabase
         val preferenzeList = mutableListOf<Preferenza>()
-        Log.d(TAG, "Esecuzione query per recuperare le preferenze con stato='$stato' per l'utente '$username'.")
+        Log.d(
+            TAG,
+            "Esecuzione query per recuperare le preferenze con stato='$stato' per l'utente '$username'."
+        )
 
         val cursor = db.rawQuery(
             "SELECT * FROM preferenze_esame WHERE stato = ? AND utente_username = ?",
@@ -152,7 +155,8 @@ class LocalDbRepository(context: Context) {
                 // Estrazione dei dati per ciascuna preferenza dal cursore
                 val id = cursor.getInt(cursor.getColumnIndexOrThrow("id_preferenza")).toString()
                 val esameCodice = cursor.getString(cursor.getColumnIndexOrThrow("esame_codice"))
-                val utenteUsername = cursor.getString(cursor.getColumnIndexOrThrow("utente_username"))
+                val utenteUsername =
+                    cursor.getString(cursor.getColumnIndexOrThrow("utente_username"))
                 val statoValue = cursor.getString(cursor.getColumnIndexOrThrow("stato"))
 
                 val preferenza = Preferenza(id, esameCodice, utenteUsername, statoValue)
@@ -163,7 +167,10 @@ class LocalDbRepository(context: Context) {
         }
         cursor.close()
         //db.close()
-        Log.d(TAG, "Recuperate ${preferenzeList.size} preferenze per stato='$stato' e utente='$username'.")
+        Log.d(
+            TAG,
+            "Recuperate ${preferenzeList.size} preferenze per stato='$stato' e utente='$username'."
+        )
         return preferenzeList
     }
 
@@ -177,7 +184,10 @@ class LocalDbRepository(context: Context) {
     fun getPreferenzaByEsameAndUser(esameCodice: String?, username: String): Preferenza? {
         // Apertura del database in modalità lettura
         val db = dbHelper.readableDatabase
-        Log.d(TAG, "Esecuzione query per recuperare la preferenza per esameCodice='$esameCodice' e utente='$username'.")
+        Log.d(
+            TAG,
+            "Esecuzione query per recuperare la preferenza per esameCodice='$esameCodice' e utente='$username'."
+        )
 
         val cursor = db.rawQuery(
             "SELECT * FROM preferenze_esame WHERE esame_codice = ? AND utente_username = ?",
@@ -191,10 +201,16 @@ class LocalDbRepository(context: Context) {
             val utenteUsername = cursor.getString(cursor.getColumnIndexOrThrow("utente_username"))
             val statoValue = cursor.getString(cursor.getColumnIndexOrThrow("stato"))
 
-            Log.d(TAG, "Preferenza trovata: id=$id, esame_codice=$esameCodiceDb, utente=$utenteUsername, stato=$statoValue")
+            Log.d(
+                TAG,
+                "Preferenza trovata: id=$id, esame_codice=$esameCodiceDb, utente=$utenteUsername, stato=$statoValue"
+            )
             preferenza = Preferenza(id, esameCodiceDb, utenteUsername, statoValue)
         } else {
-            Log.d(TAG, "Nessuna preferenza trovata per esameCodice='$esameCodice' e utente='$username'.")
+            Log.d(
+                TAG,
+                "Nessuna preferenza trovata per esameCodice='$esameCodice' e utente='$username'."
+            )
         }
         cursor.close()
         //db.close()
@@ -241,7 +257,14 @@ class LocalDbRepository(context: Context) {
                 val aula = cursor.getString(cursor.getColumnIndexOrThrow("aula"))
                 val padiglione = cursor.getString(cursor.getColumnIndexOrThrow("padiglione"))
 
-                val lezione = Lezione(id, corso, UtilsMethod().stringToTimestamp(dataInizio), UtilsMethod().stringToTimestamp(dataFine), aula, padiglione)
+                val lezione = Lezione(
+                    id,
+                    corso,
+                    UtilsMethod().stringToTimestamp(dataInizio),
+                    UtilsMethod().stringToTimestamp(dataFine),
+                    aula,
+                    padiglione
+                )
                 lessonsList.add(lezione)
             } while (cursor.moveToNext())
         } else {
@@ -250,8 +273,6 @@ class LocalDbRepository(context: Context) {
         cursor.close()
         return lessonsList
     }
-
-
 
 
 }

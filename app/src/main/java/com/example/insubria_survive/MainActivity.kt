@@ -83,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+
         Log.d(TAG, "onCreate: Configurazione completata")
         try {
             ProviderInstaller.installIfNeeded(this)

@@ -5,70 +5,76 @@ import com.example.insubria_survive.data.model.Lezione
 import com.google.api.client.util.DateTime
 import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.EventDateTime
-import java.util.*
+import java.util.Date
+import java.util.TimeZone
 
 /**
- * Oggetto helper per la creazione di oggetti Event a partire da un Esame.
+ * Oggetto helper per la creazione di oggetti [Event] della Google Calendar API
+ * a partire da un [Esame] o una [Lezione].
  */
 object CalendarHelper {
-    private const val DEFAULT_EVENT_DURATION_MILLIS = 2 * 60 * 60 * 1000L  // 2 ore
+    private const val DEFAULT_EVENT_DURATION_MILLIS = 2 * 60 * 60 * 1000L // 2 ore
 
     /**
-     * Converte un Esame in un oggetto Event della Google Calendar API.
+     * Converte un [Esame] in un oggetto [Event] della Google Calendar API.
      *
-     * @param esame L’oggetto Esame da convertire.
-     * @return Event L’oggetto Event da inserire nel calendario.
+     * @param esame L’oggetto [Esame] da convertire.
+     * @return Un [Event] corrispondente all’esame.
      */
     fun createEventFromExam(esame: Esame): Event {
-        val event = Event()
-        // Imposta il titolo dell’evento con il nome del corso (o "Esame" se non disponibile)
-        event.summary = esame.corso ?: "Esame"
-        // Descrizione dell’evento (puoi arricchirla con ulteriori informazioni come aula e padiglione)
-        event.description = "Esame programmato. Aula: ${esame.aula ?: "ND"}, Padiglione: ${esame.padiglione ?: "ND"}"
+        val event = Event().apply {
+            summary = esame.corso ?: "Esame"
+            description = "Esame programmato. Aula: ${esame.aula ?: "ND"}, Padiglione: ${esame.padiglione ?: "ND"}"
+        }
 
-        // Convertiamo la data dell'esame (se presente) in un oggetto DateTime (utilizzato dalla Calendar API)
-        val startDateTime = getEventDateTime(esame.data?.toDate())
-        // Calcoliamo la fine dell’evento aggiungendo una durata predefinita (es. 2 ore)
+        val startDateTime = esame.data?.toDate()?.let(::getEventDateTime) ?: getEventDateTime(null)
         val endDateTime = calculateEndTime(startDateTime)
 
-        // Impostiamo i tempi di inizio e fine nell’evento, indicando anche il fuso orario
-        event.start = EventDateTime()
-            .setDateTime(startDateTime)
-            .setTimeZone(TimeZone.getDefault().id)
-        event.end = EventDateTime()
-            .setDateTime(endDateTime)
-            .setTimeZone(TimeZone.getDefault().id)
+        event.start = EventDateTime().apply {
+            dateTime = startDateTime
+            timeZone = TimeZone.getDefault().id
+        }
+        event.end = EventDateTime().apply {
+            dateTime = endDateTime
+            timeZone = TimeZone.getDefault().id
+        }
 
         return event
     }
 
     /**
-     * Converte una Lezione in un oggetto Event della Google Calendar API.
+     * Converte una [Lezione] in un oggetto [Event] della Google Calendar API.
+     *
+     * @param lezione L’oggetto [Lezione] da convertire.
+     * @return Un [Event] corrispondente alla lezione.
      */
     fun createEventFromLesson(lezione: Lezione): Event {
-        val event = Event()
-        // Il titolo dell'evento è il nome del corso; se non disponibile, "Lezione"
-        event.summary = lezione.corso ?: "Lezione"
-        // La descrizione include ulteriori informazioni, ad es. aula e padiglione
-        event.description = "Lezione programmata. Aula: ${lezione.aula ?: "ND"}, Padiglione: ${lezione.padiglione ?: "ND"}"
+        val event = Event().apply {
+            summary = lezione.corso ?: "Lezione"
+            description = "Lezione programmata. Aula: ${lezione.aula ?: "ND"}, Padiglione: ${lezione.padiglione ?: "ND"}"
+        }
 
-        // L'orario di inizio viene derivato da data_inizio della lezione
-        val startDateTime = getEventDateTime(lezione.data_inizio?.toDate())
-        // Se data_fine è presente nella lezione la utilizziamo, altrimenti aggiungiamo una durata di default
+        val startDateTime = lezione.data_inizio?.toDate()?.let(::getEventDateTime) ?: getEventDateTime(null)
         val endDateTime = lezione.data_fine?.toDate()?.let { DateTime(it) } ?: calculateEndTime(startDateTime)
 
-        event.start = EventDateTime()
-            .setDateTime(startDateTime)
-            .setTimeZone(TimeZone.getDefault().id)
-        event.end = EventDateTime()
-            .setDateTime(endDateTime)
-            .setTimeZone(TimeZone.getDefault().id)
+        event.start = EventDateTime().apply {
+            dateTime = startDateTime
+            timeZone = TimeZone.getDefault().id
+        }
+        event.end = EventDateTime().apply {
+            dateTime = endDateTime
+            timeZone = TimeZone.getDefault().id
+        }
+
         return event
     }
 
     /**
-     * Converte una data (java.util.Date) in un oggetto DateTime richiesto dalla Google Calendar API.
-     * Se la data è null, utilizza la data corrente.
+     * Converte una data [Date] in un oggetto [DateTime] utilizzato dalla Calendar API.
+     * Se [date] è null, viene utilizzata la data corrente.
+     *
+     * @param date La data da convertire.
+     * @return Il corrispondente [DateTime].
      */
     private fun getEventDateTime(date: Date?): DateTime {
         val d = date ?: Date()
@@ -77,9 +83,11 @@ object CalendarHelper {
 
     /**
      * Calcola la data/ora di fine evento aggiungendo una durata predefinita all’orario di inizio.
+     *
+     * @param start L’orario di inizio dell’evento.
+     * @return L’orario di fine dell’evento.
      */
     private fun calculateEndTime(start: DateTime): DateTime {
-        val millis = start.value + DEFAULT_EVENT_DURATION_MILLIS
-        return DateTime(millis)
+        return DateTime(start.value + DEFAULT_EVENT_DURATION_MILLIS)
     }
 }

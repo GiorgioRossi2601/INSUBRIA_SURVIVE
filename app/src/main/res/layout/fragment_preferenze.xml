@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/preferenze_container"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.preferenze.preferenzeFragment">
+    tools:context=".ui.preferenze.PreferenzeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

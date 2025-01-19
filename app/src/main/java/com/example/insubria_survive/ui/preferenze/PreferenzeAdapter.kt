@@ -12,67 +12,64 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 /**
- * Adapter per visualizzare la lista degli esami con preferenza.
+ * Adapter per la visualizzazione della lista degli esami con preferenza.
  *
- * @param data Lista di EsameConPreferenza.
- * @param onItemClick Lambda da eseguire al click sull'item.
+ * @param data Lista di [EsameConPreferenza] da mostrare.
+ * @param onItemClick Lambda per gestire il click sull'item.
  */
 class PreferenzeAdapter(
     private var data: List<EsameConPreferenza>,
     private val onItemClick: (EsameConPreferenza) -> Unit
-) : RecyclerView.Adapter<PreferenzeAdapter.EsamiPreferitiViewHolder>() {
+) : RecyclerView.Adapter<PreferenzeAdapter.PreferenzaViewHolder>() {
 
-    // Tag per il logging
     companion object {
         private const val TAG = "PreferenzeAdapter"
     }
 
     /**
-     * ViewHolder per l'item di Preferenza.
+     * ViewHolder per un item di preferenza.
      */
-    inner class EsamiPreferitiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class PreferenzaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvExamName: TextView = itemView.findViewById(R.id.tvExamName)
         val tvExamDate: TextView = itemView.findViewById(R.id.tvExamDate)
         val tvExamAula: TextView = itemView.findViewById(R.id.tvExamAula)
         val tvExamPadiglione: TextView = itemView.findViewById(R.id.tvExamPadiglione)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EsamiPreferitiViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PreferenzaViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_preferenza, parent, false)
         Log.d(TAG, "ViewHolder creato per item_preferenza")
-        return EsamiPreferitiViewHolder(view)
+        return PreferenzaViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: EsamiPreferitiViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PreferenzaViewHolder, position: Int) {
         val item = data[position]
         Log.d(TAG, "Binding item in posizione $position per esame ${item.esame.id}")
 
-        // Imposta il nome del corso (con fallback)
-        holder.tvExamName.text = item.esame.corso ?: "Esame non disponibile"
+        holder.apply {
+            tvExamName.text = item.esame.corso ?: "Esame non disponibile"
+            val formattedDate = item.esame.data?.toDate()?.let { date ->
+                SimpleDateFormat("dd MMM yyyy - HH:mm", Locale.getDefault()).format(date)
+            } ?: "Data non disponibile"
+            tvExamDate.text = formattedDate
 
-        // Format della data in una stringa leggibile
-        val formattedDate = item.esame.data?.toDate()?.let { date ->
-            SimpleDateFormat("dd MMM yyyy - HH:mm", Locale.getDefault()).format(date)
-        } ?: "Data non disponibile"
-        holder.tvExamDate.text = formattedDate
+            tvExamAula.text = item.esame.aula ?: "Aula non disponibile"
+            tvExamPadiglione.text = "Padiglione ${item.esame.padiglione ?: "N/D"}"
 
-        holder.tvExamAula.text = item.esame.aula ?: "Aula non disponibile"
-        holder.tvExamPadiglione.text = "Padiglione ${item.esame.padiglione ?: "N/D"}"
-
-        // Imposta il click listener per l'item
-        holder.itemView.setOnClickListener {
-            Log.d(TAG, "Item cliccato: esame ${item.esame.id}")
-            onItemClick(item)
+            itemView.setOnClickListener {
+                Log.d(TAG, "Item cliccato: esame ${item.esame.id}")
+                onItemClick(item)
+            }
         }
     }
 
     override fun getItemCount(): Int = data.size
 
     /**
-     * Aggiorna la lista di dati visualizzati e notifica il RecyclerView.
+     * Aggiorna la lista dei dati e notifica il RecyclerView.
      *
-     * @param listaEsamiPreferiti Nuova lista di EsameConPreferenza.
+     * @param listaEsamiPreferiti Nuova lista di [EsameConPreferenza].
      */
     fun updatePreferenze(listaEsamiPreferiti: List<EsameConPreferenza>) {
         Log.d(TAG, "Aggiornamento dati: ${listaEsamiPreferiti.size} elementi ricevuti")

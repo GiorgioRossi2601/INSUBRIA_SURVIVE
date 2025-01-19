@@ -23,24 +23,19 @@ class EsamiViewModel(
     private val localDbRepository: LocalDbRepository
 ) : ViewModel() {
 
-    // Tag per il logging
     companion object {
         private const val TAG = "EsamiViewModel"
     }
 
-    // Istanza di Firestore per il recupero degli esami
     private val db = Firebase.firestore
 
-    // LiveData per la lista di esami
     private val _esamiList = MutableLiveData<List<Esame>>()
     val esamiList: LiveData<List<Esame>> get() = _esamiList
 
-    // Listener per la snapshot di Firestore
     private var listenerRegistration: ListenerRegistration? = null
 
     init {
-        Log.d(TAG, "Inizializzazione del ViewModel")
-        // Avvio del recupero degli esami da Firestore
+        Log.d(TAG, "init: Inizializzazione del ViewModel")
         fetchEsamiFromFirebase()
     }
 
@@ -55,7 +50,6 @@ class EsamiViewModel(
         )
         _esamiList.value = testEsami
 
-        // Salva in DB locale in background
         viewModelScope.launch(Dispatchers.IO) {
             testEsami.forEach { localDbRepository.insertOrUpdateEsame(it) }
         }
@@ -66,25 +60,23 @@ class EsamiViewModel(
      * Ad ogni aggiornamento, ordina i documenti, aggiorna la LiveData e salva i dati nel DB locale.
      */
     private fun fetchEsamiFromFirebase() {
-        Log.d(TAG, "Inizio il recupero degli esami da Firestore")
+        Log.d(TAG, "fetchEsamiFromFirebase: Inizio il recupero degli esami da Firestore")
         listenerRegistration = db.collection("esame")
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
-                    Log.e(TAG, "Errore nel recupero dei dati: ${exception.message}", exception)
+                    Log.e(TAG, "fetchEsamiFromFirebase: Errore nel recupero dei dati: ${exception.message}", exception)
                     return@addSnapshotListener
                 }
 
                 if (snapshot != null) {
-                    Log.d(TAG, "Documenti trovati: ${snapshot.size()}")
+                    Log.d(TAG, "fetchEsamiFromFirebase: Documenti trovati: ${snapshot.size()}")
                     val esami = snapshot.documents.mapNotNull { doc ->
                         try {
-                            Log.d(TAG, "Documento recuperato: ${doc.data}")
-                            // Converte il documento in un oggetto Esame e imposta l'id
+                            Log.d(TAG, "fetchEsamiFromFirebase: Documento recuperato: ${doc.data}")
                             val esame = doc.toObject(Esame::class.java)
-                            esame?.let { it.id = doc.id }
-                            esame
+                            esame?.apply { id = doc.id }
                         } catch (e: Exception) {
-                            Log.e(TAG, "Errore nel parsing del documento: ${e.message}", e)
+                            Log.e(TAG, "fetchEsamiFromFirebase: Errore nel parsing del documento: ${e.message}", e)
                             null
                         }
                     }.sortedWith(
@@ -95,19 +87,17 @@ class EsamiViewModel(
                     )
 
                     if (esami.isEmpty()) {
-                        Log.d(TAG, "Nessun documento valido trovato nella collezione")
+                        Log.d(TAG, "fetchEsamiFromFirebase: Nessun documento valido trovato nella collezione")
                     }
-                    // Aggiorna la LiveData per aggiornare l'UI
+
                     _esamiList.value = esami
 
                     // Salva gli esami nel DB locale in background
                     viewModelScope.launch(Dispatchers.IO) {
-                        esami.forEach { esame ->
-                            localDbRepository.insertOrUpdateEsame(esame)
-                        }
+                        esami.forEach { localDbRepository.insertOrUpdateEsame(it) }
                     }
                 } else {
-                    Log.d(TAG, "La snapshot è null")
+                    Log.d(TAG, "fetchEsamiFromFirebase: Snapshot null")
                     _esamiList.value = emptyList()
                 }
             }
@@ -115,7 +105,6 @@ class EsamiViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        // Rimuove il listener per evitare memory leak
         listenerRegistration?.remove()
         Log.d(TAG, "onCleared: Listener rimosso")
     }

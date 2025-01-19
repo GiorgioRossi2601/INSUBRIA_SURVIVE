@@ -5,23 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.insubria_survive.databinding.FragmentHomeBinding
 import com.example.insubria_survive.R
 import com.example.insubria_survive.data.model.SezioneHome
+import com.example.insubria_survive.databinding.FragmentHomeBinding
 
+/**
+ * Fragment per la visualizzazione della home.
+ *
+ * Mostra una griglia di sezioni, ciascuna naviga verso una specifica destinazione.
+ */
 class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private var _binding: FragmentHomeBinding? = null
+    // La proprietà binding è valida solo tra onCreateView e onDestroyView.
     private val binding get() = _binding!!
 
     private lateinit var adapter: HomeAdapter
 
+    // Definizione delle sezioni da mostrare nella home.
     private val sezioni = listOf(
         SezioneHome(R.drawable.ic_menu_exams, R.string.menu_esami, R.id.nav_exams),
         SezioneHome(R.drawable.ic_menu_lessons, R.string.menu_orario_lezioni, R.id.nav_lessons),
@@ -36,29 +40,32 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        setupRecyclerView()
+        return binding.root
+    }
 
-        val recyclerView = binding.recyclerViewHome
-
-        recyclerView.layoutManager = GridLayoutManager(context, 3)
-
-        adapter = HomeAdapter(sezioni)
-        adapter.setOnItemClickListener(object : HomeAdapter.onItemClickListener{
-            override fun onItemClick(position: Int) {
-                val sezione = sezioni[position]
-                val navController = findNavController()
-                // Se la destinazione è definita, crea NavOptions per fare popUpTo la home destination
-                val navOptions = NavOptions.Builder()
-                    // 'R.id.nav_home' è il punto di partenza
-                    .setPopUpTo(R.id.nav_home, inclusive = true)
-                    .build()
-                navController.navigate(sezione.destinatione!!, null, navOptions)
+    /**
+     * Configura il RecyclerView impostando il layout a griglia, l'adapter e il listener per il click.
+     */
+    private fun setupRecyclerView() {
+        binding.recyclerViewHome.apply {
+            layoutManager = GridLayoutManager(context, 3)
+            adapter = HomeAdapter(sezioni).also { homeAdapter ->
+                homeAdapter.setOnItemClickListener(object : HomeAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        val sezione = sezioni[position]
+                        val navController = findNavController()
+                        // Se la destinazione è definita, crea NavOptions per fare popUpTo la destinazione home.
+                        val navOptions = NavOptions.Builder()
+                            .setPopUpTo(R.id.nav_home, inclusive = true)
+                            .build()
+                        sezione.destinatione?.let { destination ->
+                            navController.navigate(destination, null, navOptions)
+                        }
+                    }
+                })
             }
-        })
-
-        recyclerView.adapter = adapter
-
-        return root
+        }
     }
 
     override fun onDestroyView() {

@@ -17,7 +17,7 @@ class EsamiViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EsamiViewModel::class.java)) {
-            Log.d("EsamiViewModelFactory", "Creazione di EsamiViewModel")
+            Log.d("EsamiViewModelFactory", "create: Creazione di EsamiViewModel")
             return EsamiViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

@@ -6,22 +6,23 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
 /**
- * La classe DatabaseHelper gestisce la creazione ed eventuale aggiornamento
+ * La classe [DatabaseHelper] gestisce la creazione ed eventuale aggiornamento
  * del database SQLite per l’applicazione.
  *
- * Estende SQLiteOpenHelper e definisce le tabelle "esame" e "preferenze_esame".
+ * Estende [SQLiteOpenHelper] e definisce le tabelle "esame", "preferenze_esame" e "lezione".
  */
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     /**
      * Metodo chiamato al momento della prima creazione del database.
      * Qui vengono create le tabelle necessarie.
+     *
+     * @param db Il database SQLite su cui eseguire le operazioni.
      */
     override fun onCreate(db: SQLiteDatabase) {
         Log.d(TAG, "Creazione del database e delle tabelle necessarie.")
 
         // Creazione della tabella "esame"
-        // La tabella contiene le informazioni relative agli esami.
         val createEsameTable = """
             CREATE TABLE IF NOT EXISTS esame (
                 id_esame TEXT PRIMARY KEY,
@@ -35,7 +36,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         db.execSQL(createEsameTable)
 
         // Creazione della tabella "preferenze_esame"
-        // La tabella memorizza le preferenze relative agli esami per ciascun utente.
         val createPreferenzeTable = """
             CREATE TABLE IF NOT EXISTS preferenze_esame (
                 id_preferenza INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -49,6 +49,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         Log.d(TAG, "Esecuzione SQL per la creazione della tabella 'preferenze_esame': $createPreferenzeTable")
         db.execSQL(createPreferenzeTable)
 
+        // Creazione della tabella "lezione"
         val createLezioneTable = """
             CREATE TABLE IF NOT EXISTS lezione (
                 id_lezione TEXT PRIMARY KEY,
@@ -65,7 +66,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 
     /**
      * Metodo chiamato quando è necessario aggiornare il database.
-     * In questo caso, elimina le tabelle esistenti e le ricrea.
+     * In questo esempio vengono eliminate le tabelle esistenti e ricreate.
      *
      * @param db Il database SQLite.
      * @param oldVersion Versione corrente del database.
@@ -73,6 +74,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
      */
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         Log.d(TAG, "Upgrade del database da versione $oldVersion a $newVersion. Eliminazione delle tabelle esistenti...")
+
         // Eliminazione delle tabelle esistenti (drop & create)
         db.execSQL("DROP TABLE IF EXISTS preferenze_esame")
         db.execSQL("DROP TABLE IF EXISTS esame")
@@ -84,9 +86,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
     }
 
     companion object {
-        // Tag per il logging
         private const val TAG = "DatabaseHelper"
-        // Nome del file del database e versione. Cambiando la versione verrà invocato onUpgrade.
         private const val DB_NAME = "1nsubria_survive.db"
         private const val DB_VERSION = 1
     }

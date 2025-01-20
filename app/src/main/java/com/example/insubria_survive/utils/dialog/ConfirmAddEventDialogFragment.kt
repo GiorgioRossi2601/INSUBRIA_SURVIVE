@@ -1,4 +1,4 @@
-package com.example.insubria_survive.utils
+package com.example.insubria_survive.utils.dialog
 
 import android.app.Dialog
 import android.os.Bundle

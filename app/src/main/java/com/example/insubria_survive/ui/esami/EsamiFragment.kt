@@ -19,8 +19,8 @@ import com.example.insubria_survive.data.db.LocalDbRepository
 import com.example.insubria_survive.data.model.Esame
 import com.example.insubria_survive.data.model.Stato
 import com.example.insubria_survive.databinding.FragmentEsamiBinding
-import com.example.insubria_survive.ui.preferenze.CambiaStatoDialogFragment
-import com.example.insubria_survive.utils.ConfirmAddEventDialogFragment
+import com.example.insubria_survive.utils.dialog.CambiaStatoDialogFragment
+import com.example.insubria_survive.utils.dialog.ConfirmAddEventDialogFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

@@ -13,7 +13,7 @@ import com.example.insubria_survive.calendario.CalendarManager
 import com.example.insubria_survive.data.db.LocalDbRepository
 import com.example.insubria_survive.data.model.Lezione
 import com.example.insubria_survive.databinding.FragmentLezioniBinding
-import com.example.insubria_survive.utils.ConfirmAddEventDialogFragment
+import com.example.insubria_survive.utils.dialog.ConfirmAddEventDialogFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.services.calendar.CalendarScopes

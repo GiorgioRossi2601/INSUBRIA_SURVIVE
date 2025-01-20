@@ -13,6 +13,7 @@ import com.example.insubria_survive.data.db.LocalDbRepository
 import com.example.insubria_survive.data.model.EsameConPreferenza
 import com.example.insubria_survive.data.model.Stato
 import com.example.insubria_survive.databinding.FragmentPreferenzeBinding
+import com.example.insubria_survive.utils.dialog.CambiaStatoDialogFragment
 
 /**
  * Fragment per la visualizzazione delle preferenze degli esami.
@@ -124,7 +125,7 @@ class PreferenzeFragment : Fragment() {
         val statoCorrente = preferenza?.stato?.let { Stato.valueOf(it) } ?: Stato.IN_FORSE
         Log.d(TAG, "showCambiaStatoDialog: esame=${esameConPref.esame.id}, statoCorrente=${statoCorrente.name}")
 
-        val dialog = CambiaStatoDialogFragment.newInstance(esameConPref.esame, statoCorrente)
+        val dialog = CambiaStatoDialogFragment.Companion.newInstance(esameConPref.esame, statoCorrente)
         dialog.show(parentFragmentManager, "CambiaStatoDialogFragment")
     }
 }

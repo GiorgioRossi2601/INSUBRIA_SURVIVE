@@ -69,8 +69,8 @@ class TimelineViewModel(
                         }
                     }.sortedWith(
                         compareBy(
-                            { it.codice_padiglione?.lowercase() },
-                            { it.ora_apertura?.lowercase()}
+                            { it.codice_padiglione},
+                            { it.ora_apertura}
                         )
                     )
 
@@ -100,4 +100,6 @@ class TimelineViewModel(
         Log.d(TAG, "onCleared: Listener rimosso")
     }
 }
+
+
 

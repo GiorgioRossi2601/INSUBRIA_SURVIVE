@@ -1,5 +1,6 @@
-package com.example.insubria_survive.ui.preferenze
+package com.example.insubria_survive.utils.dialog
 
+import android.R
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,8 @@ import com.example.insubria_survive.data.db.LocalDbRepository
 import com.example.insubria_survive.data.model.Esame
 import com.example.insubria_survive.data.model.Preferenza
 import com.example.insubria_survive.data.model.Stato
+import com.example.insubria_survive.ui.preferenze.PreferenzeViewModel
+import com.example.insubria_survive.ui.preferenze.PreferenzeViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Locale
 
@@ -70,7 +73,7 @@ class CambiaStatoDialogFragment : DialogFragment() {
 
         val adapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_list_item_single_choice,
+            R.layout.simple_list_item_single_choice,
             nomeStati
         )
 

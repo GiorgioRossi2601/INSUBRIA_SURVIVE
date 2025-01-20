@@ -5,11 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.insubria_survive.data.db.LocalDbRepository
+import com.example.insubria_survive.data.model.Esame
+import com.example.insubria_survive.data.model.Padiglione
 import com.example.insubria_survive.databinding.FragmentTimelineBinding
+import com.example.insubria_survive.ui.esami.EsamiFragment
+import com.example.insubria_survive.utils.dialog.ConfirmAddEventDialogFragment
+import com.example.insubria_survive.utils.dialog.ConfirmMapsPadiglioneDialogFragment
 
 class TimelineFragment : Fragment() {
 
@@ -50,6 +56,13 @@ class TimelineFragment : Fragment() {
         adapter = TimelineAdapter(emptyList())
         binding.recyclerViewTimeline.layoutManager=LinearLayoutManager(requireContext())
         binding.recyclerViewTimeline.adapter = adapter
+
+        adapter.setOnItemClickListener(object : TimelineAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val padiglioneSelezionato = adapter.getPadiglioneAt(position)
+                showConfermaMapsPadiglione(padiglioneSelezionato)
+            }
+        })
     }
 
     private fun observePadiglioni() {
@@ -64,5 +77,33 @@ class TimelineFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    /**
+     * Mostra il dialog per la conferma del salvataggio dell'evento su calendario.
+     *
+     * @param esame L'esame da inserire.
+     */
+    private fun showConfermaMapsPadiglione(padiglione: Padiglione) {
+        Log.d(TAG, "showConfermaMapsPadiglione: Mostro dialog per conferma maps del padiglione: ${padiglione.codice_padiglione}")
+        val dialog = ConfirmMapsPadiglioneDialogFragment().apply {
+            callback = { dialogResult ->
+                if (dialogResult == "si") {
+                    handleItemClick(padiglione)
+                } else {
+                    Toast.makeText(requireContext(), "Operazione annullata", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        dialog.show(parentFragmentManager, "ConfirmMapsPadiglioneDialogFragment")
+    }
+
+    private fun handleItemClick(padiglione: Padiglione) {
+        Toast.makeText(
+            requireContext(),
+            "Hai cliccato sull'item: ${padiglione.codice_padiglione}",
+            Toast.LENGTH_SHORT
+        ).show()
+
     }
 }

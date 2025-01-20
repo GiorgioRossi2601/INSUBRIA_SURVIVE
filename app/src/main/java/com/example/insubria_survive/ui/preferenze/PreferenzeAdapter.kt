@@ -29,7 +29,7 @@ class PreferenzeAdapter(
     /**
      * ViewHolder per un item di preferenza.
      */
-    inner class PreferenzaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class PreferenzaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvExamName: TextView = itemView.findViewById(R.id.tvExamName)
         val tvExamDate: TextView = itemView.findViewById(R.id.tvExamDate)
         val tvExamAula: TextView = itemView.findViewById(R.id.tvExamAula)

@@ -87,8 +87,8 @@ class EsamiAdapter(
 
             // Click sull'intero item
             itemView.setOnClickListener {
-                Log.d(TAG, "Item cliccato in posizione: $adapterPosition")
-                listener?.onItemClick(adapterPosition)
+                Log.d(TAG, "Item cliccato in posizione: $position")
+                listener?.onItemClick(position)
             }
         }
     }

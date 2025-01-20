@@ -102,8 +102,44 @@ class TimelineFragment : Fragment() {
         Toast.makeText(
             requireContext(),
             "Hai cliccato sull'item: ${padiglione.codice_padiglione}",
-            Toast.LENGTH_SHORT
+            Toast.LENGTH_LONG
         ).show()
+
+        val posizione = padiglione.posizione
+        if (posizione == null) {
+            Toast.makeText(
+                requireContext(),
+                "Posizione non disponibile per il padiglione selezionato",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        val lat= posizione.latitude
+        val lng=posizione.longitude
+        val codice=padiglione.codice_padiglione
+
+        // Creazione URI per Google Maps
+        // geo:lat,lng?q=lat,lng(Label)
+        val gmmIntentUri = android.net.Uri.parse("geo:$lat,$lng?q=$lat,$lng(PADIGLIONE ${codice})")
+
+        // Creazione Intent esplicito per Google Maps
+        val mapIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, gmmIntentUri).apply {
+            // Impostare il pacchetto di Google Maps, in modo da aprire direttamente l'app,
+            // se presente. In caso contrario, verrà mostrato un chooser con le app di mappe disponibili
+            setPackage("com.google.android.apps.maps")
+        }
+
+        // Controllo se esiste un’app in grado di gestire l’Intent
+        if (mapIntent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(mapIntent)
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "Nessuna app per le mappe trovata sul dispositivo!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
     }
 }

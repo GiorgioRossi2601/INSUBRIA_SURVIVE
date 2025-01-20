@@ -66,7 +66,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_exams,
                 R.id.nav_lessons,
                 R.id.nav_timeline,
-                R.id.nav_navigator,
                 R.id.nav_preferences
             ),
             drawerLayout

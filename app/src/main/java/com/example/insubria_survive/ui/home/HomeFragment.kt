@@ -30,7 +30,6 @@ class HomeFragment : Fragment() {
         SezioneHome(R.drawable.ic_menu_exams, R.string.menu_esami, R.id.nav_exams),
         SezioneHome(R.drawable.ic_menu_lessons, R.string.menu_orario_lezioni, R.id.nav_lessons),
         SezioneHome(R.drawable.ic_menu_timeline, R.string.menu_timeline, R.id.nav_timeline),
-        SezioneHome(R.drawable.ic_menu_navigator, R.string.menu_navigatore, R.id.nav_navigator),
         SezioneHome(R.drawable.ic_menu_preferences, R.string.menu_preferenze, R.id.nav_preferences)
     )
 
@@ -49,7 +48,7 @@ class HomeFragment : Fragment() {
      */
     private fun setupRecyclerView() {
         binding.recyclerViewHome.apply {
-            layoutManager = GridLayoutManager(context, 3)
+            layoutManager = GridLayoutManager(context, 2)
             adapter = HomeAdapter(sezioni).also { homeAdapter ->
                 homeAdapter.setOnItemClickListener(object : HomeAdapter.OnItemClickListener {
                     override fun onItemClick(position: Int) {

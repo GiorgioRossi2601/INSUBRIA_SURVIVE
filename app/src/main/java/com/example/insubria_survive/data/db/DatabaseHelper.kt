@@ -62,6 +62,20 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
             """.trimIndent()
         Log.d(TAG, "Esecuzione SQL per la creazione della tabella 'lezione': $createLezioneTable")
         db.execSQL(createLezioneTable)
+
+        // Creazione della tabella "padiglione"
+        val createPadiglioneTable = """
+            CREATE TABLE IF NOT EXISTS padiglione (
+                id_padiglione TEXT,
+                codice_padiglione TEXT PRIMARY KEY,
+                descrizione TEXT,
+                ora_apertura TEXT,
+                ora_chiusura TEXT,
+                posizione TEXT
+            );
+            """.trimIndent()
+        Log.d(TAG, "Esecuzione SQL per la creazione della tabella 'padiglione': $createPadiglioneTable")
+        db.execSQL(createPadiglioneTable)
     }
 
     /**
@@ -79,6 +93,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         db.execSQL("DROP TABLE IF EXISTS preferenze_esame")
         db.execSQL("DROP TABLE IF EXISTS esame")
         db.execSQL("DROP TABLE IF EXISTS lezione")
+        db.execSQL("DROP TABLE IF EXISTS padiglione")
 
         // Ricreazione del database
         onCreate(db)
@@ -88,6 +103,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
     companion object {
         private const val TAG = "DatabaseHelper"
         private const val DB_NAME = "1nsubria_survive.db"
-        private const val DB_VERSION = 1
+        private const val DB_VERSION = 2
     }
 }

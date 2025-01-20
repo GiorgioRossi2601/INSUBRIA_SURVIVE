@@ -6,8 +6,10 @@ import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.example.insubria_survive.data.model.Esame
 import com.example.insubria_survive.data.model.Lezione
+import com.example.insubria_survive.data.model.Padiglione
 import com.example.insubria_survive.data.model.Preferenza
 import com.example.insubria_survive.utils.UtilsMethod
+import com.google.firebase.firestore.GeoPoint
 
 /**
  * Repository per gestire le operazioni sul database locale.
@@ -242,5 +244,88 @@ class LocalDbRepository(context: Context) {
             }
         }
         return lessonsList
+    }
+
+    ////////////////////////////////
+    // Gestione tabella "padiglione"
+    ////////////////////////////////
+
+    /**
+     * Inserisce o aggiorna un [Padiglione] nella tabella "esame".
+     *
+     * Converte il Timestamp (Firebase) in una stringa secondo il formato locale.
+     *
+     * @param padiglione L'oggetto [Padiglione] da salvare.
+     */
+    fun insertOrUpdatePadiglione(padiglione: Padiglione) {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+
+        val contentValues = ContentValues().apply {
+            put("id_padiglione", padiglione.id)
+            put("codice_padiglione", padiglione.codice_padiglione)
+            put("descrizione", padiglione.descrizione)
+            put("ora_apertura", padiglione.ora_apertura)
+            put("ora_chiusura", padiglione.ora_chiusura)
+
+            if (padiglione.posizione != null) {
+                val lat = padiglione.posizione.latitude
+                val lng = padiglione.posizione.longitude
+                put("posizione", "$lat,$lng")
+            }
+
+
+        }
+
+        Log.d(TAG, "Inserimento/aggiornamento padiglione: $contentValues")
+        db.insertWithOnConflict("padiglione", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)
+        Log.d(TAG, "Operazione completata: padiglione salvato con successo.")
+    }
+
+    /**
+     * Restituisce la lista di tutti gli [Padiglione] salvati nella tabella "esame".
+     *
+     * @return La lista degli esami presenti nel DB.
+     */
+    fun getAllPadiglioni(): List<Padiglione> {
+        val db = dbHelper.readableDatabase
+        val padiglioniList = mutableListOf<Padiglione>()
+        Log.d(TAG, "Esecuzione query per recuperare tutti i padiglioni.")
+
+        // Gestione automatica della chiusura del cursore con 'use'
+        db.rawQuery("SELECT * FROM padiglione", null).use { cursor ->
+            if (cursor.moveToFirst()) {
+                do {
+                    val idPad = cursor.getString(cursor.getColumnIndexOrThrow("id_padiglione"))
+                    val codicePad = cursor.getString(cursor.getColumnIndexOrThrow("codice_padiglione"))
+                    val descrizionePad = cursor.getString(cursor.getColumnIndexOrThrow("descrizione"))
+                    val oraApertura = cursor.getString(cursor.getColumnIndexOrThrow("ora_apertura"))
+                    val oraChiusura = cursor.getString(cursor.getColumnIndexOrThrow("ora_chiusura"))
+                    val posizioneString = cursor.getString(cursor.getColumnIndexOrThrow("posizione"))
+                    // Converto "45.123,9.456" in un GeoPoint
+                    val posizionePad: GeoPoint? = if (!posizioneString.isNullOrBlank()) {
+                        val parts = posizioneString.split(",")
+                        if (parts.size == 2) {
+                            val lat = parts[0].toDoubleOrNull() ?: 0.0
+                            val lng = parts[1].toDoubleOrNull() ?: 0.0
+                            GeoPoint(lat, lng)
+                        } else null
+                    } else null
+
+                    val padiglione = Padiglione(
+                        id = idPad,
+                        codice_padiglione = codicePad,
+                        descrizione = descrizionePad,
+                        ora_apertura = oraApertura,
+                        ora_chiusura = oraChiusura,
+                        posizione = posizionePad
+                    )
+                    padiglioniList.add(padiglione)
+                } while (cursor.moveToNext())
+            } else {
+                Log.d(TAG, "Nessun padiglione trovato nella tabella 'padiglione'.")
+            }
+        }
+        Log.d(TAG, "Recuperati ${padiglioniList.size} esami dalla tabella 'padiglione'.")
+        return padiglioniList
     }
 }

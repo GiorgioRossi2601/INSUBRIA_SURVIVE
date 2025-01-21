@@ -10,11 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.insubria_survive.data.db.LocalDbRepository
-import com.example.insubria_survive.data.model.Esame
 import com.example.insubria_survive.data.model.Padiglione
 import com.example.insubria_survive.databinding.FragmentTimelineBinding
-import com.example.insubria_survive.ui.esami.EsamiFragment
-import com.example.insubria_survive.utils.dialog.ConfirmAddEventDialogFragment
 import com.example.insubria_survive.utils.dialog.ConfirmMapsPadiglioneDialogFragment
 
 class TimelineFragment : Fragment() {
@@ -46,7 +43,6 @@ class TimelineFragment : Fragment() {
         timelineViewModel = ViewModelProvider(this, factory).get(TimelineViewModel::class.java)
 
         setupTimelineRecyclerView()
-
         observePadiglioni()
 
         return binding.root
@@ -125,8 +121,8 @@ class TimelineFragment : Fragment() {
 
         // Creazione Intent esplicito per Google Maps
         val mapIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, gmmIntentUri).apply {
-            // Impostare il pacchetto di Google Maps, in modo da aprire direttamente l'app,
-            // se presente. In caso contrario, verrà mostrato un chooser con le app di mappe disponibili
+            // Imposta il pacchetto di Google Maps, in modo da aprire direttamente l'app, se presente.
+            // In caso contrario, verrà mostrato un chooser con le app di mappe disponibili
             setPackage("com.google.android.apps.maps")
         }
 

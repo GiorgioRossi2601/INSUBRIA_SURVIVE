@@ -9,7 +9,7 @@
         android:id="@+id/tvNoLezioni"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nessuna lezione prevista"
+        android:text="@string/nessuna_lezione_prevista"
         android:textColor="@color/black"
         android:textSize="16sp" />
 </LinearLayout>

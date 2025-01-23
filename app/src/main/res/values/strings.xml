@@ -28,6 +28,10 @@
     <string name="bt_preferenze">Preferenza</string>
     <string name="da_fare">ESAMI IN PROGRAMMA</string>
     <string name="in_forse">ESAMI IN FORSE</string>
-    <string name="non_fare">ESAMI NON IN PROGRAMMA</string>"
+    <string name="non_fare">ESAMI NON IN PROGRAMMA</string>
+
+    <string name="bt_calendario">Calendario</string>
+    <string name="nessuna_lezione_prevista">Nessuna lezione prevista</string>
+
 
 </resources>

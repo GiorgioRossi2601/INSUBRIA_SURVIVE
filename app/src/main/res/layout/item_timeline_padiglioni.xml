@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
 
-    <!-- Linea a sinistra (timeline) -->
+    <!-- Linea a sinistra -->
     <View
         android:id="@+id/timeline_line"
         android:layout_width="4dp"

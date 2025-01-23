@@ -54,7 +54,7 @@
             app:layout_constraintEnd_toStartOf="@id/btCalendario"
             android:layout_marginEnd="8dp" />
 
-        <!-- (Facoltativo) altri campi, ad esempio Aula e Padiglione -->
+        <!-- Campo aula -->
         <TextView
             android:id="@+id/tvAula"
             android:layout_width="0dp"
@@ -66,6 +66,7 @@
             app:layout_constraintEnd_toStartOf="@id/btCalendario"
             android:layout_marginEnd="8dp" />
 
+        <!-- Campo padiglione -->
         <TextView
             android:id="@+id/tvPadiglione"
             android:layout_width="0dp"
@@ -81,7 +82,7 @@
             android:id="@+id/btCalendario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Calendario"
+            android:text="@string/bt_calendario"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

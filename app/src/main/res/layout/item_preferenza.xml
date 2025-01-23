@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Nome/Corso -->
+        <!-- Campo corso -->
         <TextView
             android:id="@+id/tvExamName"
             android:layout_width="0dp"
@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Data -->
+        <!-- Campo data -->
         <TextView
             android:id="@+id/tvExamDate"
             android:layout_width="0dp"
@@ -41,7 +41,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvExamName"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Aula -->
+        <!-- Campo aula -->
         <TextView
             android:id="@+id/tvExamAula"
             android:layout_width="0dp"
@@ -51,7 +51,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvExamDate"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Padiglione -->
+        <!-- Campo padiglione -->
         <TextView
             android:id="@+id/tvExamPadiglione"
             android:layout_width="0dp"

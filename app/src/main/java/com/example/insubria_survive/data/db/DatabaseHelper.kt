@@ -9,7 +9,7 @@ import android.util.Log
  * La classe [DatabaseHelper] gestisce la creazione ed eventuale aggiornamento
  * del database SQLite per l’applicazione.
  *
- * Estende [SQLiteOpenHelper] e definisce le tabelle "esame", "preferenze_esame" e "lezione".
+ * Estende [SQLiteOpenHelper] e definisce le tabelle "esame", "preferenze_esame", "lezione" e "padiglione".
  */
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 

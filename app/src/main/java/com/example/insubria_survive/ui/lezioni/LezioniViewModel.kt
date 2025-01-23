@@ -10,7 +10,6 @@ import com.example.insubria_survive.data.model.LezioniListItem
 import com.example.insubria_survive.data.model.LezioniListItem.LessonItem
 import com.example.insubria_survive.data.model.LezioniListItem.NoLessonItem
 import com.example.insubria_survive.data.model.LezioniListItem.WeekHeader
-import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,12 +39,12 @@ class LezioniViewModel(private val context: Context) : ViewModel() {
 
         val repository = LocalDbRepository(context)
         // Recupera tutte le lezioni e le ordina per data di inizio
-        val lessons: List<Lezione> = repository.getAllLezioni().sortedBy { it.data_inizio?.toDate() }
+        val lezioni: List<Lezione> = repository.getAllLezioni().sortedBy { it.data_inizio?.toDate() }
 
         // Filtra le lezioni in base alla settimana e all'anno
-        val filteredLessons = lessons.filter { lesson ->
+        val filteredLessons = lezioni.filter { lezione ->
             val calLesson = Calendar.getInstance(Locale.getDefault()).apply {
-                time = lesson.data_inizio?.toDate() ?: Date()
+                time = lezione.data_inizio?.toDate() ?: Date()
             }
             val lessonWeek = calLesson.get(Calendar.WEEK_OF_YEAR)
             val lessonYear = calLesson.get(Calendar.YEAR)

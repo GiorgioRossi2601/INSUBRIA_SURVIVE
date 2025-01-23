@@ -88,7 +88,7 @@ class LezioniViewModel(private val context: Context) : ViewModel() {
     }
 
     /**
-     * Formattta una data nel formato "dd/MM/yyyy".
+     * Formatta una data nel formato "dd/MM/yyyy".
      */
     private fun formatDate(date: Date): String {
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())

@@ -1,6 +1,8 @@
 [versions]
 agp = "8.7.3"
 firebaseBom = "33.7.0"
+googleApiClientAndroid = "2.7.1"
+googleHttpClientAndroid = "1.45.3"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -15,13 +17,15 @@ navigationFragmentKtx = "2.8.5"
 navigationUiKtx = "2.8.5"
 annotation = "1.9.1"
 core = "1.15.0"
+playServicesAuth = "21.3.0"
+playServicesMaps = "19.0.0"
+googleGsm = "4.4.2"
+firebaseAuth="23.1.0"
+firebaseFirestore="25.1.1"
+firebaseUi="8.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-firebase-auth = { module = "com.google.firebase:firebase-auth", version = "23.1.0" }
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-firestore = { module = "com.google.firebase:firebase-firestore", version = "25.1.1" }
-firebase-ui-firestore = { module = "com.firebaseui:firebase-ui-firestore", version = "8.0.2" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -34,10 +38,20 @@ androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navi
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
+firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestore" }
+firebase-ui-firestore = { module = "com.firebaseui:firebase-ui-firestore", version.ref = "firebaseUi" }
+google-api-client-android = { module = "com.google.api-client:google-api-client-android", version.ref = "googleApiClientAndroid" }
+google-api-client-gson = { module = "com.google.api-client:google-api-client-gson", version.ref = "googleApiClientAndroid" }
+google-http-client-android = { module = "com.google.http-client:google-http-client-android", version.ref = "googleHttpClientAndroid" }
+google-http-client-gson = { module = "com.google.http-client:google-http-client-gson", version.ref = "googleHttpClientAndroid" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-google-gsm-google-services = {id = "com.google.gms.google-services", version = "4.4.2"}
+google-gsm-google-services = {id = "com.google.gms.google-services", version.ref = "googleGsm"}
 

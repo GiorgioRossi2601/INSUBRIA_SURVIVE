@@ -64,7 +64,11 @@ class EsamiViewModel(
         listenerRegistration = db.collection("esame")
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
-                    Log.e(TAG, "fetchEsamiFromFirebase: Errore nel recupero dei dati: ${exception.message}", exception)
+                    Log.e(
+                        TAG,
+                        "fetchEsamiFromFirebase: Errore nel recupero dei dati: ${exception.message}",
+                        exception
+                    )
                     return@addSnapshotListener
                 }
 
@@ -76,7 +80,11 @@ class EsamiViewModel(
                             val esame = doc.toObject(Esame::class.java)
                             esame?.apply { id = doc.id }
                         } catch (e: Exception) {
-                            Log.e(TAG, "fetchEsamiFromFirebase: Errore nel parsing del documento: ${e.message}", e)
+                            Log.e(
+                                TAG,
+                                "fetchEsamiFromFirebase: Errore nel parsing del documento: ${e.message}",
+                                e
+                            )
                             null
                         }
                     }.sortedWith(
@@ -87,7 +95,10 @@ class EsamiViewModel(
                     )
 
                     if (esami.isEmpty()) {
-                        Log.d(TAG, "fetchEsamiFromFirebase: Nessun documento valido trovato nella collezione")
+                        Log.d(
+                            TAG,
+                            "fetchEsamiFromFirebase: Nessun documento valido trovato nella collezione"
+                        )
                     }
 
                     _esamiList.value = esami

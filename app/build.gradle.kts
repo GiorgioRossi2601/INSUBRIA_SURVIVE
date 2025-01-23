@@ -61,28 +61,26 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.ui.firestore)
 
-    // Per l'autenticazione con gli account Google (OAuth 2.0)
-    implementation ("com.google.android.gms:play-services-auth:21.3.0")
+    // --- Dipendenze per l'autenticazione con Google (OAuth 2.0) ---
+    implementation (libs.play.services.auth)
 
     // --- Dipendenze per la Google Calendar API ---
-    // Google Calendar API (utilizza una versione disponibile, ad esempio la seguente)
     implementation("com.google.apis:google-api-services-calendar:v3-rev20241101-2.0.0") {
         exclude (group = "org.apache.httpcomponents")
     }
 
-    // HTTP Client e Json Factory
-    implementation("com.google.http-client:google-http-client-android:1.45.3")
-    implementation("com.google.http-client:google-http-client-gson:1.45.3")
-    implementation("com.google.api-client:google-api-client-android:2.7.1")
-    implementation("com.google.api-client:google-api-client-gson:2.7.1")
-
-
+    // --- Dipendenze per l'uso del Google HTTP Client e Json Factory ---
+    implementation(libs.google.http.client.android)
+    implementation(libs.google.http.client.gson)
+    implementation(libs.google.api.client.android)
+    implementation(libs.google.api.client.gson)
     configurations.all {
         resolutionStrategy {
             force("io.grpc:grpc-okhttp:1.51.0")
@@ -92,7 +90,6 @@ dependencies {
         }
     }
 
-    implementation("com.google.android.gms:play-services-maps:19.0.0")
-
-
+    // --- Dipendenze per l'uso del Google Maps API ---
+    implementation(libs.play.services.maps)
 }

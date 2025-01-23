@@ -19,9 +19,5 @@ data class Esame(
     val aula: String?,
     val padiglione: String?,
 ) : Serializable {
-    /**
-     * Costruttore di default richiesto, per esempio dalla serializzazione/deserializzazione.
-     * Inizializza le proprietà con valori di default.
-     */
     constructor() : this("", "", null, "", "")
 }

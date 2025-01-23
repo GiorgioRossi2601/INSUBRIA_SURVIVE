@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
  * Classe che gestisce la comunicazione con la Google Calendar API.
  *
  * @property context Il contesto Android.
- * @property credential La credenziale dell’account Google.
+ * @property credential Le credenziali dell’account Google.
  */
 class CalendarManager(
     private val context: Context,
@@ -28,7 +28,7 @@ class CalendarManager(
         private const val TAG = "CalendarManager"
     }
 
-    // Inizializziamo il client Calendar utilizzando NetHttpTransport e GsonFactory
+    // Inizializza il client Calendar utilizzando NetHttpTransport e GsonFactory
     private val httpTransport: HttpTransport = NetHttpTransport()
     private val calendarService: Calendar = Calendar.Builder(
         httpTransport,
@@ -42,13 +42,14 @@ class CalendarManager(
      * Crea un evento relativo ad un [Esame] e lo inserisce nel calendario "primary" dell’utente.
      *
      * @param esame L’esame da inserire come evento.
-     * @param callback Funzione di callback che restituisce un flag di successo e informazioni (es. link all’evento o messaggio d’errore).
+     * @param callback Funzione di callback che restituisce un flag di successo e informazioni.
      */
     fun addExamToCalendar(esame: Esame, callback: (success: Boolean, info: String?) -> Unit) {
         val event = CalendarHelper.createEventFromExam(esame)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val createdEvent: Event = calendarService.events().insert("primary", event).execute()
+                val createdEvent: Event =
+                    calendarService.events().insert("primary", event).execute()
                 Log.d(TAG, "Evento creato: ${createdEvent.htmlLink}")
                 callback(true, createdEvent.htmlLink)
             } catch (e: Exception) {
@@ -62,13 +63,14 @@ class CalendarManager(
      * Crea un evento relativo a una [Lezione] e lo inserisce nel calendario "primary" dell’utente.
      *
      * @param lezione La lezione da inserire come evento.
-     * @param callback Funzione di callback che restituisce un flag di successo e informazioni (es. link all’evento o messaggio d’errore).
+     * @param callback Funzione di callback che restituisce un flag di successo e informazioni.
      */
     fun addLessonToCalendar(lezione: Lezione, callback: (success: Boolean, info: String?) -> Unit) {
         val event = CalendarHelper.createEventFromLesson(lezione)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val createdEvent: Event = calendarService.events().insert("primary", event).execute()
+                val createdEvent: Event =
+                    calendarService.events().insert("primary", event).execute()
                 Log.d(TAG, "Evento Lezione creato: ${createdEvent.htmlLink}")
                 callback(true, createdEvent.htmlLink)
             } catch (e: Exception) {

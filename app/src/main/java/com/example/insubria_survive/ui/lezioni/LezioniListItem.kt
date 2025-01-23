@@ -1,4 +1,10 @@
-package com.example.insubria_survive.data.model
+package com.example.insubria_survive.ui.lezioni
+
+import com.example.insubria_survive.data.model.Lezione
+
+/**
+ *
+ * */
 
 sealed class LezioniListItem {
     data class WeekHeader(val title: String) : LezioniListItem()

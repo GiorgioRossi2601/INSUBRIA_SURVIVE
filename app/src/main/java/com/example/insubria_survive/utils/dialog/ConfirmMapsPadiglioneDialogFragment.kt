@@ -6,9 +6,9 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
- * DialogFragment per confermare l'aggiunta di un evento su Google Calendar.
+ * DialogFragment per confermare l'accesso a maps per visualizzare la posizione del padiglione.
  *
- * Mostra un dialog "Yes/No" e invoca la callback passando la stringa "si" o "no" in base alla scelta dell'utente.
+ * Mostra un dialog "Si/No" e invoca la callback passando la stringa "si" o "no" in base alla scelta dell'utente.
  */
 class ConfirmMapsPadiglioneDialogFragment : DialogFragment() {
     /**

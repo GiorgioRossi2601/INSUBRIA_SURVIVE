@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.insubria_survive.R
-import com.example.insubria_survive.data.model.SezioneHome
 
 /**
  * Adapter per visualizzare la lista delle sezioni della Home in un RecyclerView.

@@ -5,14 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.insubria_survive.data.model.LezioniListItem
-import com.example.insubria_survive.data.model.LezioniListItem.LessonItem
-import com.example.insubria_survive.data.model.LezioniListItem.NoLessonItem
-import com.example.insubria_survive.data.model.LezioniListItem.WeekHeader
-import com.example.insubria_survive.databinding.ItemLezioniBinding
-import com.example.insubria_survive.databinding.ItemNoLezioniBinding
-import com.example.insubria_survive.databinding.ItemWeekHeaderBinding
+import com.example.insubria_survive.data.model.Lezione
+import com.example.insubria_survive.ui.lezioni.LezioniListItem.*
+import com.example.insubria_survive.databinding.*
 import com.example.insubria_survive.utils.UtilsMethod
+import com.example.insubria_survive.R
 
 /**
  * Adapter per la visualizzazione della lista delle lezioni.
@@ -25,7 +22,7 @@ import com.example.insubria_survive.utils.UtilsMethod
  * @param onCalendarioClick Callback per gestire il click sul bottone Calendario, passando la [Lezione] corrispondente.
  */
 class LezioniAdapter(
-    private val onCalendarioClick: (com.example.insubria_survive.data.model.Lezione) -> Unit
+    private val onCalendarioClick: (Lezione) -> Unit
 ) : ListAdapter<LezioniListItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
@@ -36,8 +33,8 @@ class LezioniAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (val item = getItem(position)) {
-            is WeekHeader   -> VIEW_TYPE_WEEK_HEADER
-            is LessonItem   -> VIEW_TYPE_LESSON_ITEM
+            is WeekHeader -> VIEW_TYPE_WEEK_HEADER
+            is LessonItem -> VIEW_TYPE_LESSON_ITEM
             is NoLessonItem -> VIEW_TYPE_NO_LESSON
         }
     }
@@ -49,10 +46,12 @@ class LezioniAdapter(
                 val binding = ItemWeekHeaderBinding.inflate(inflater, parent, false)
                 WeekHeaderViewHolder(binding)
             }
+
             VIEW_TYPE_NO_LESSON -> {
                 val binding = ItemNoLezioniBinding.inflate(inflater, parent, false)
                 NoLessonViewHolder(binding)
             }
+
             else -> { // VIEW_TYPE_LESSON_ITEM
                 val binding = ItemLezioniBinding.inflate(inflater, parent, false)
                 LessonViewHolder(binding, onCalendarioClick)
@@ -62,8 +61,8 @@ class LezioniAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = getItem(position)) {
-            is WeekHeader   -> (holder as WeekHeaderViewHolder).bind(item)
-            is LessonItem   -> (holder as LessonViewHolder).bind(item)
+            is WeekHeader -> (holder as WeekHeaderViewHolder).bind(item)
+            is LessonItem -> (holder as LessonViewHolder).bind(item)
             is NoLessonItem -> (holder as NoLessonViewHolder).bind()
         }
     }
@@ -83,7 +82,7 @@ class LezioniAdapter(
      */
     class LessonViewHolder(
         private val binding: ItemLezioniBinding,
-        private val onCalendarioClick: (com.example.insubria_survive.data.model.Lezione) -> Unit
+        private val onCalendarioClick: (Lezione) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: LessonItem) {
             binding.apply {
@@ -91,12 +90,15 @@ class LezioniAdapter(
 
                 val utils = UtilsMethod()
                 // Format della data nel formato "dd/MM/yyyy"
-                tvData.text = item.lesson.data_inizio?.let { utils.firebaseTimestampToDateLongFormat(it) }
-                    ?: ""
+                tvData.text =
+                    item.lesson.data_inizio?.let { utils.firebaseTimestampToDateLongFormat(it) }
+                        ?: ""
 
                 // Orario formattato come "HH:mm - HH:mm"
-                val oraInizio = item.lesson.data_inizio?.let { utils.firebaseTimestampToTimeOnly(it) } ?: ""
-                val oraFine   = item.lesson.data_fine?.let { utils.firebaseTimestampToTimeOnly(it) } ?: ""
+                val oraInizio =
+                    item.lesson.data_inizio?.let { utils.firebaseTimestampToTimeOnly(it) } ?: ""
+                val oraFine =
+                    item.lesson.data_fine?.let { utils.firebaseTimestampToTimeOnly(it) } ?: ""
                 tvOra.text = if (oraInizio.isNotEmpty() && oraFine.isNotEmpty()) {
                     "$oraInizio - $oraFine"
                 } else {
@@ -121,7 +123,7 @@ class LezioniAdapter(
     class NoLessonViewHolder(private val binding: ItemNoLezioniBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            binding.tvNoLezioni.text = "Nessuna lezione prevista"
+            binding.tvNoLezioni.text = R.string.nessuna_lezione_prevista.toString()
         }
     }
 
@@ -133,7 +135,10 @@ class LezioniAdapter(
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: LezioniListItem, newItem: LezioniListItem): Boolean {
+        override fun areContentsTheSame(
+            oldItem: LezioniListItem,
+            newItem: LezioniListItem
+        ): Boolean {
             return oldItem == newItem
         }
     }

@@ -58,7 +58,10 @@ object LoginRepository {
      * @param result Il risultato ottenuto.
      * @param onAfterLogin Callback per propagare il risultato finale.
      */
-    private fun onInternalLogin(result: Result<LoggedInUser>, onAfterLogin: (Result<LoggedInUser>) -> Unit) {
+    private fun onInternalLogin(
+        result: Result<LoggedInUser>,
+        onAfterLogin: (Result<LoggedInUser>) -> Unit
+    ) {
         Log.d(TAG, "Risultato del login ricevuto: $result")
         if (result is Result.Success) {
             setLoggedInUser(result.data)

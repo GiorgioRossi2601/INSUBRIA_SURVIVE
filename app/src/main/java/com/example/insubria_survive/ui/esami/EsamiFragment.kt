@@ -28,7 +28,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.services.calendar.CalendarScopes
-import com.example.insubria_survive.R
 
 /**
  * Fragment per la visualizzazione degli esami.
@@ -96,7 +95,11 @@ class EsamiFragment : Fragment() {
                 try {
                     val account: GoogleSignInAccount? = task.getResult(Exception::class.java)
                     if (account != null) {
-                        Toast.makeText(requireContext(), "Login Google riuscito", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            requireContext(),
+                            "Login Google riuscito",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                         pendingExam?.let { exam ->
                             addExamToCalendarWithAccount(exam, account)
@@ -230,13 +233,17 @@ class EsamiFragment : Fragment() {
      * @param esame L'esame da inserire.
      */
     private fun showConfermaAggiuntaCalendario(esame: Esame) {
-        Log.d(TAG, "showConfermaAggiuntaCalendario: Mostro dialog per conferma aggiunta calendario: ${esame.id}")
+        Log.d(
+            TAG,
+            "showConfermaAggiuntaCalendario: Mostro dialog per conferma aggiunta calendario: ${esame.id}"
+        )
         val dialog = ConfirmAddEventDialogFragment().apply {
             callback = { dialogResult ->
                 if (dialogResult == "si") {
                     handleExamClick(esame)
                 } else {
-                    Toast.makeText(requireContext(), "Operazione annullata", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Operazione annullata", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }

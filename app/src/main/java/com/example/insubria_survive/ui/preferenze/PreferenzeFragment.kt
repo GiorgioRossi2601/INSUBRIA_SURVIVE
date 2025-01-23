@@ -123,9 +123,13 @@ class PreferenzeFragment : Fragment() {
         // Recupera la preferenza esistente, se presente
         val preferenza = repository.getPreferenzaByEsameAndUser(esameConPref.esame.id, username)
         val statoCorrente = preferenza?.stato?.let { Stato.valueOf(it) } ?: Stato.IN_FORSE
-        Log.d(TAG, "showCambiaStatoDialog: esame=${esameConPref.esame.id}, statoCorrente=${statoCorrente.name}")
+        Log.d(
+            TAG,
+            "showCambiaStatoDialog: esame=${esameConPref.esame.id}, statoCorrente=${statoCorrente.name}"
+        )
 
-        val dialog = CambiaStatoDialogFragment.Companion.newInstance(esameConPref.esame, statoCorrente)
+        val dialog =
+            CambiaStatoDialogFragment.Companion.newInstance(esameConPref.esame, statoCorrente)
         dialog.show(parentFragmentManager, "CambiaStatoDialogFragment")
     }
 }

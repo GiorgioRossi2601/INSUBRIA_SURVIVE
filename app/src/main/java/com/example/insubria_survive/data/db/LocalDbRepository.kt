@@ -14,7 +14,7 @@ import com.google.firebase.firestore.GeoPoint
 /**
  * Repository per gestire le operazioni sul database locale.
  * Contiene metodi per l'inserimento, l'aggiornamento e il recupero dei dati
- * dalle tabelle "esame", "preferenze_esame" e "lezione".
+ * dalle tabelle "esame", "preferenze_esame", "lezione" e "padiglione".
  *
  * @param context Il contesto Android.
  */
@@ -33,8 +33,6 @@ class LocalDbRepository(context: Context) {
 
     /**
      * Inserisce o aggiorna un [Esame] nella tabella "esame".
-     *
-     * Converte il Timestamp (Firebase) in una stringa secondo il formato locale.
      *
      * @param esame L'oggetto [Esame] da salvare.
      */
@@ -130,7 +128,10 @@ class LocalDbRepository(context: Context) {
     fun getPreferenzeByStato(stato: String, username: String): List<Preferenza> {
         val db = dbHelper.readableDatabase
         val preferenzeList = mutableListOf<Preferenza>()
-        Log.d(TAG, "Esecuzione query per recuperare le preferenze con stato='$stato' per l'utente '$username'.")
+        Log.d(
+            TAG,
+            "Esecuzione query per recuperare le preferenze con stato='$stato' per l'utente '$username'."
+        )
 
         db.rawQuery(
             "SELECT * FROM preferenze_esame WHERE stato = ? AND utente_username = ?",
@@ -140,7 +141,8 @@ class LocalDbRepository(context: Context) {
                 do {
                     val id = cursor.getInt(cursor.getColumnIndexOrThrow("id_preferenza")).toString()
                     val esameCodice = cursor.getString(cursor.getColumnIndexOrThrow("esame_codice"))
-                    val utenteUsername = cursor.getString(cursor.getColumnIndexOrThrow("utente_username"))
+                    val utenteUsername =
+                        cursor.getString(cursor.getColumnIndexOrThrow("utente_username"))
                     val statoValue = cursor.getString(cursor.getColumnIndexOrThrow("stato"))
 
                     val preferenza = Preferenza(id, esameCodice, utenteUsername, statoValue)
@@ -150,7 +152,10 @@ class LocalDbRepository(context: Context) {
                 Log.d(TAG, "Nessuna preferenza trovata per stato='$stato' e utente='$username'.")
             }
         }
-        Log.d(TAG, "Recuperate ${preferenzeList.size} preferenze per stato='$stato' e utente='$username'.")
+        Log.d(
+            TAG,
+            "Recuperate ${preferenzeList.size} preferenze per stato='$stato' e utente='$username'."
+        )
         return preferenzeList
     }
 
@@ -163,7 +168,10 @@ class LocalDbRepository(context: Context) {
      */
     fun getPreferenzaByEsameAndUser(esameCodice: String?, username: String): Preferenza? {
         val db = dbHelper.readableDatabase
-        Log.d(TAG, "Esecuzione query per recuperare la preferenza per esameCodice='$esameCodice' e utente='$username'.")
+        Log.d(
+            TAG,
+            "Esecuzione query per recuperare la preferenza per esameCodice='$esameCodice' e utente='$username'."
+        )
 
         db.rawQuery(
             "SELECT * FROM preferenze_esame WHERE esame_codice = ? AND utente_username = ?",
@@ -172,13 +180,20 @@ class LocalDbRepository(context: Context) {
             if (cursor.moveToFirst()) {
                 val id = cursor.getInt(cursor.getColumnIndexOrThrow("id_preferenza")).toString()
                 val esameCodiceDb = cursor.getString(cursor.getColumnIndexOrThrow("esame_codice"))
-                val utenteUsername = cursor.getString(cursor.getColumnIndexOrThrow("utente_username"))
+                val utenteUsername =
+                    cursor.getString(cursor.getColumnIndexOrThrow("utente_username"))
                 val statoValue = cursor.getString(cursor.getColumnIndexOrThrow("stato"))
 
-                Log.d(TAG, "Preferenza trovata: id=$id, esame_codice=$esameCodiceDb, utente=$utenteUsername, stato=$statoValue")
+                Log.d(
+                    TAG,
+                    "Preferenza trovata: id=$id, esame_codice=$esameCodiceDb, utente=$utenteUsername, stato=$statoValue"
+                )
                 return Preferenza(id, esameCodiceDb, utenteUsername, statoValue)
             } else {
-                Log.d(TAG, "Nessuna preferenza trovata per esameCodice='$esameCodice' e utente='$username'.")
+                Log.d(
+                    TAG,
+                    "Nessuna preferenza trovata per esameCodice='$esameCodice' e utente='$username'."
+                )
             }
         }
         return null
@@ -251,9 +266,7 @@ class LocalDbRepository(context: Context) {
     ////////////////////////////////
 
     /**
-     * Inserisce o aggiorna un [Padiglione] nella tabella "esame".
-     *
-     * Converte il Timestamp (Firebase) in una stringa secondo il formato locale.
+     * Inserisce o aggiorna un [Padiglione] nella tabella "padiglione".
      *
      * @param padiglione L'oggetto [Padiglione] da salvare.
      */
@@ -272,8 +285,6 @@ class LocalDbRepository(context: Context) {
                 val lng = padiglione.posizione.longitude
                 put("posizione", "$lat,$lng")
             }
-
-
         }
 
         Log.d(TAG, "Inserimento/aggiornamento padiglione: $contentValues")
@@ -282,9 +293,9 @@ class LocalDbRepository(context: Context) {
     }
 
     /**
-     * Restituisce la lista di tutti gli [Padiglione] salvati nella tabella "esame".
+     * Restituisce la lista di tutti gli [Padiglione] salvati nella tabella "padiglione".
      *
-     * @return La lista degli esami presenti nel DB.
+     * @return La lista dei padiglioni presenti nel DB.
      */
     fun getAllPadiglioni(): List<Padiglione> {
         val db = dbHelper.readableDatabase
@@ -296,11 +307,14 @@ class LocalDbRepository(context: Context) {
             if (cursor.moveToFirst()) {
                 do {
                     val idPad = cursor.getString(cursor.getColumnIndexOrThrow("id_padiglione"))
-                    val codicePad = cursor.getString(cursor.getColumnIndexOrThrow("codice_padiglione"))
-                    val descrizionePad = cursor.getString(cursor.getColumnIndexOrThrow("descrizione"))
+                    val codicePad =
+                        cursor.getString(cursor.getColumnIndexOrThrow("codice_padiglione"))
+                    val descrizionePad =
+                        cursor.getString(cursor.getColumnIndexOrThrow("descrizione"))
                     val oraApertura = cursor.getString(cursor.getColumnIndexOrThrow("ora_apertura"))
                     val oraChiusura = cursor.getString(cursor.getColumnIndexOrThrow("ora_chiusura"))
-                    val posizioneString = cursor.getString(cursor.getColumnIndexOrThrow("posizione"))
+                    val posizioneString =
+                        cursor.getString(cursor.getColumnIndexOrThrow("posizione"))
                     // Converto "45.123,9.456" in un GeoPoint
                     val posizionePad: GeoPoint? = if (!posizioneString.isNullOrBlank()) {
                         val parts = posizioneString.split(",")
@@ -325,7 +339,7 @@ class LocalDbRepository(context: Context) {
                 Log.d(TAG, "Nessun padiglione trovato nella tabella 'padiglione'.")
             }
         }
-        Log.d(TAG, "Recuperati ${padiglioniList.size} esami dalla tabella 'padiglione'.")
+        Log.d(TAG, "Recuperati ${padiglioniList.size} padiglioni dalla tabella 'padiglione'.")
         return padiglioniList
     }
 }

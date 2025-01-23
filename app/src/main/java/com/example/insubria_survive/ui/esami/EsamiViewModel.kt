@@ -17,7 +17,9 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel per gestire i dati relativi agli esami.
  *
- * Utilizza Firestore come sorgente dati remoto e salva i dati anche nel DB locale.
+ * Utilizza Firestore come sorgente dati remoto e salva i dati nel DB locale.
+ *
+ * @param localDbRepository Repository per l'accesso al DB locale.
  */
 class EsamiViewModel(
     private val localDbRepository: LocalDbRepository
@@ -37,22 +39,6 @@ class EsamiViewModel(
     init {
         Log.d(TAG, "init: Inizializzazione del ViewModel")
         fetchEsamiFromFirebase()
-    }
-
-    /**
-     * Metodo di test per caricare una lista di esami in memoria.
-     * Attualmente non utilizzato.
-     */
-    private fun loadTestEsami() {
-        val testEsami = listOf(
-            Esame("1", "Matematica", Timestamp.now(), "2", "Monte"),
-            Esame("2", "Fisica", Timestamp.now(), "1", "Morselli")
-        )
-        _esamiList.value = testEsami
-
-        viewModelScope.launch(Dispatchers.IO) {
-            testEsami.forEach { localDbRepository.insertOrUpdateEsame(it) }
-        }
     }
 
     /**

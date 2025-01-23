@@ -6,10 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.insubria_survive.data.db.LocalDbRepository
 import com.example.insubria_survive.data.model.Lezione
-import com.example.insubria_survive.data.model.LezioniListItem
-import com.example.insubria_survive.data.model.LezioniListItem.LessonItem
-import com.example.insubria_survive.data.model.LezioniListItem.NoLessonItem
-import com.example.insubria_survive.data.model.LezioniListItem.WeekHeader
+import com.example.insubria_survive.ui.lezioni.LezioniListItem.LessonItem
+import com.example.insubria_survive.ui.lezioni.LezioniListItem.NoLessonItem
+import com.example.insubria_survive.ui.lezioni.LezioniListItem.WeekHeader
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,7 +38,8 @@ class LezioniViewModel(private val context: Context) : ViewModel() {
 
         val repository = LocalDbRepository(context)
         // Recupera tutte le lezioni e le ordina per data di inizio
-        val lezioni: List<Lezione> = repository.getAllLezioni().sortedBy { it.data_inizio?.toDate() }
+        val lezioni: List<Lezione> =
+            repository.getAllLezioni().sortedBy { it.data_inizio?.toDate() }
 
         // Filtra le lezioni in base alla settimana e all'anno
         val filteredLessons = lezioni.filter { lezione ->

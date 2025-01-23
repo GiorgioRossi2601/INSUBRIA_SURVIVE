@@ -54,10 +54,14 @@ class LezioniFragment : Fragment() {
 
         // Gestione del cambio di data nel CalendarView: filtra per settimana e anno
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            val cal = Calendar.getInstance(Locale.getDefault()).apply { set(year, month, dayOfMonth) }
+            val cal =
+                Calendar.getInstance(Locale.getDefault()).apply { set(year, month, dayOfMonth) }
             val selectedWeek = cal.get(Calendar.WEEK_OF_YEAR)
             val selectedYear = cal.get(Calendar.YEAR)
-            Log.d(TAG, "Data selezionata: $year-${month + 1}-$dayOfMonth, Settimana: $selectedWeek, Anno: $selectedYear")
+            Log.d(
+                TAG,
+                "Data selezionata: $year-${month + 1}-$dayOfMonth, Settimana: $selectedWeek, Anno: $selectedYear"
+            )
             viewModel.loadLezioni(weekFilter = selectedWeek, yearFilter = selectedYear)
         }
 
@@ -101,7 +105,7 @@ class LezioniFragment : Fragment() {
                     val lezione = doc.toObject(Lezione::class.java)?.apply { id = doc.id }
                     lezione?.let { repository.insertOrUpdateLezione(it) }
                 }
-                // Ricarica le lezioni (eventuale aggiornamento della vista)
+                // Ricarica le lezioni
                 viewModel.loadLezioni()
             }
             .addOnFailureListener { exception ->
@@ -114,14 +118,15 @@ class LezioniFragment : Fragment() {
      *
      * Mostra un dialog di conferma e, se accettato, aggiunge l’evento al calendario.
      */
-    private fun handleCalendarioClick(lesson: Lezione) {
+    private fun handleCalendarioClick(lezione: Lezione) {
         val dialog = ConfirmAddEventDialogFragment().apply {
             callback = { result ->
                 if (result == "si") {
-                    addLessonToCalendar(lesson)
+                    addLessonToCalendar(lezione)
                 } else {
                     Log.d(TAG, "L'utente ha annullato l'aggiunta dell'evento al calendario.")
-                    Toast.makeText(requireContext(), "Operazione annullata!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Operazione annullata", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -133,7 +138,7 @@ class LezioniFragment : Fragment() {
      *
      * Se l'utente è loggato con Google, crea il credential e utilizza [CalendarManager].
      */
-    private fun addLessonToCalendar(lesson: Lezione) {
+    private fun addLessonToCalendar(lezione: Lezione) {
         val account = GoogleSignIn.getLastSignedInAccount(requireContext())
         if (account != null) {
             val credential = GoogleAccountCredential.usingOAuth2(
@@ -142,7 +147,7 @@ class LezioniFragment : Fragment() {
                 selectedAccount = account.account
             }
             val calendarManager = CalendarManager(requireContext(), credential)
-            calendarManager.addLessonToCalendar(lesson) { success, info ->
+            calendarManager.addLessonToCalendar(lezione) { success, info ->
                 requireActivity().runOnUiThread {
                     if (success) {
                         Toast.makeText(

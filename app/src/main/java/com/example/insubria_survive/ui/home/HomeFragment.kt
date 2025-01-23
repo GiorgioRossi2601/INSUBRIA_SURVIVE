@@ -9,7 +9,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.insubria_survive.R
-import com.example.insubria_survive.data.model.SezioneHome
 import com.example.insubria_survive.databinding.FragmentHomeBinding
 
 /**
@@ -20,6 +19,7 @@ import com.example.insubria_survive.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+
     // La proprietà binding è valida solo tra onCreateView e onDestroyView.
     private val binding get() = _binding!!
 

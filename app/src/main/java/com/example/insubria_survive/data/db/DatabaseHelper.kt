@@ -15,7 +15,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 
     /**
      * Metodo chiamato al momento della prima creazione del database.
-     * Qui vengono create le tabelle necessarie.
+     * Qui vengono create le tabelle.
      *
      * @param db Il database SQLite su cui eseguire le operazioni.
      */
@@ -46,7 +46,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                 FOREIGN KEY(esame_codice) REFERENCES esame(id_esame) ON UPDATE CASCADE
             );
             """.trimIndent()
-        Log.d(TAG, "Esecuzione SQL per la creazione della tabella 'preferenze_esame': $createPreferenzeTable")
+        Log.d(
+            TAG,
+            "Esecuzione SQL per la creazione della tabella 'preferenze_esame': $createPreferenzeTable"
+        )
         db.execSQL(createPreferenzeTable)
 
         // Creazione della tabella "lezione"
@@ -74,7 +77,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                 posizione TEXT
             );
             """.trimIndent()
-        Log.d(TAG, "Esecuzione SQL per la creazione della tabella 'padiglione': $createPadiglioneTable")
+        Log.d(
+            TAG,
+            "Esecuzione SQL per la creazione della tabella 'padiglione': $createPadiglioneTable"
+        )
         db.execSQL(createPadiglioneTable)
     }
 
@@ -87,7 +93,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
      * @param newVersion Nuova versione del database.
      */
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        Log.d(TAG, "Upgrade del database da versione $oldVersion a $newVersion. Eliminazione delle tabelle esistenti...")
+        Log.d(
+            TAG,
+            "Upgrade del database da versione $oldVersion a $newVersion. Eliminazione delle tabelle esistenti..."
+        )
 
         // Eliminazione delle tabelle esistenti (drop & create)
         db.execSQL("DROP TABLE IF EXISTS preferenze_esame")

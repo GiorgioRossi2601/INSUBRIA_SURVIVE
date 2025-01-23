@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
  * ViewModel per gestire le preferenze degli esami di un utente.
  *
  * Carica dal database locale gli esami e li suddivide in liste in base allo stato (DA_FARE, IN_FORSE, NON_FARE).
- * Se un esame non ha una preferenza, viene impostato lo stato di default "IN_FORSE" e (opzionalmente) salvato.
+ * Se un esame non ha una preferenza, viene impostato lo stato di default "IN_FORSE" e salvato.
  */
 class PreferenzeViewModel(
     private val repository: LocalDbRepository,

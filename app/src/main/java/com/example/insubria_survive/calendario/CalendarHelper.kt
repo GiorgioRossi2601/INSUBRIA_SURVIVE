@@ -24,7 +24,8 @@ object CalendarHelper {
     fun createEventFromExam(esame: Esame): Event {
         val event = Event().apply {
             summary = esame.corso ?: "Esame"
-            description = "Esame programmato. Aula: ${esame.aula ?: "ND"}, Padiglione: ${esame.padiglione ?: "ND"}"
+            description =
+                "Esame programmato. Aula: ${esame.aula ?: "ND"}, Padiglione: ${esame.padiglione ?: "ND"}"
         }
 
         val startDateTime = esame.data?.toDate()?.let(::getEventDateTime) ?: getEventDateTime(null)
@@ -49,24 +50,27 @@ object CalendarHelper {
      * @return Un [Event] corrispondente alla lezione.
      */
     fun createEventFromLesson(lezione: Lezione): Event {
-        val event = Event().apply {
+        val evento = Event().apply {
             summary = lezione.corso ?: "Lezione"
-            description = "Lezione programmata. Aula: ${lezione.aula ?: "ND"}, Padiglione: ${lezione.padiglione ?: "ND"}"
+            description =
+                "Lezione programmata. Aula: ${lezione.aula ?: "ND"}, Padiglione: ${lezione.padiglione ?: "ND"}"
         }
 
-        val startDateTime = lezione.data_inizio?.toDate()?.let(::getEventDateTime) ?: getEventDateTime(null)
-        val endDateTime = lezione.data_fine?.toDate()?.let { DateTime(it) } ?: calculateEndTime(startDateTime)
+        val startDateTime =
+            lezione.data_inizio?.toDate()?.let(::getEventDateTime) ?: getEventDateTime(null)
+        val endDateTime =
+            lezione.data_fine?.toDate()?.let { DateTime(it) } ?: calculateEndTime(startDateTime)
 
-        event.start = EventDateTime().apply {
+        evento.start = EventDateTime().apply {
             dateTime = startDateTime
             timeZone = TimeZone.getDefault().id
         }
-        event.end = EventDateTime().apply {
+        evento.end = EventDateTime().apply {
             dateTime = endDateTime
             timeZone = TimeZone.getDefault().id
         }
 
-        return event
+        return evento
     }
 
     /**

@@ -32,6 +32,9 @@
 
     <string name="bt_calendario">Calendario</string>
     <string name="nessuna_lezione_prevista">Nessuna lezione prevista</string>
+    <string name="INSUBRIA_SURVIVE">INSUBRIA SURVIVE</string>
+    <string name="ESAMI">TUTTI GLI ESAMI</string>
+    <string name="TIMELINE">ORARI DEI PADIGLIONI</string>
 
 
 </resources>

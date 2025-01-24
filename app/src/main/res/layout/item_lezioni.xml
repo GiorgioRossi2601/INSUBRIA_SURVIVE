@@ -27,7 +27,6 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btCalendario"
             android:layout_marginEnd="8dp" />
 
         <!-- Campo data (solo data) -->
@@ -39,7 +38,6 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvCorso"
-            app:layout_constraintEnd_toStartOf="@id/btCalendario"
             android:layout_marginEnd="8dp" />
 
         <!-- Campo orario (inizio - fine) -->
@@ -51,7 +49,6 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvData"
-            app:layout_constraintEnd_toStartOf="@id/btCalendario"
             android:layout_marginEnd="8dp" />
 
         <!-- Campo aula -->
@@ -63,7 +60,6 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvOra"
-            app:layout_constraintEnd_toStartOf="@id/btCalendario"
             android:layout_marginEnd="8dp" />
 
         <!-- Campo padiglione -->
@@ -75,17 +71,14 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvAula"
-            app:layout_constraintEnd_toStartOf="@id/btCalendario"
             android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/btCalendario"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/bt_calendario"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPadiglione"
             android:layout_marginEnd="8dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

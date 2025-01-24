@@ -123,7 +123,7 @@ class LezioniAdapter(
     class NoLessonViewHolder(private val binding: ItemNoLezioniBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            binding.tvNoLezioni.text = R.string.nessuna_lezione_prevista.toString()
+            binding.tvNoLezioni.text = "Nessuna lezione prevista"
         }
     }
 

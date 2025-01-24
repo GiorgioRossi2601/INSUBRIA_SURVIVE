@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/PAD"
         android:textStyle="italic"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:fontFamily="sans-serif-black"
         android:paddingTop="16dp"
         android:paddingBottom="8dp"

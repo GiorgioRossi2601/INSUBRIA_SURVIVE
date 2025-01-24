@@ -1,6 +1,5 @@
 package com.example.insubria_survive.ui.timeline
 
-import com.example.insubria_survive.ui.preferenze.PreferenzeViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.insubria_survive.data.db.LocalDbRepository

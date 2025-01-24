@@ -1,5 +1,6 @@
 package com.example.insubria_survive.ui.timeline
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.insubria_survive.data.model.Padiglione
 import com.example.insubria_survive.R
 import android.widget.TextView
-import com.example.insubria_survive.data.model.Esame
-import com.example.insubria_survive.ui.esami.EsamiAdapter.OnItemClickListener
 
 
 class TimelineAdapter(
@@ -46,7 +45,7 @@ class TimelineAdapter(
     class TimelineViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val tvCodicePad: TextView = itemView.findViewById(R.id.tvCodicePad)
         val tvDescrizionePad: TextView = itemView.findViewById(R.id.tvDescrizionePad)
-        val tvPosizionePad: TextView = itemView.findViewById(R.id.tvPosizionePad)
+        val tvPosizionePad: TextView = itemView.findViewById(R.id.tvViaPad)
         val tvOrari: TextView = itemView.findViewById(R.id.tvOrariPad)
     }
 
@@ -55,18 +54,24 @@ class TimelineAdapter(
         return TimelineViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: TimelineViewHolder, position: Int) {
         val padiglione = padiglioni[position]
         holder.apply {
             tvCodicePad.text = padiglione.codice_padiglione
             tvDescrizionePad.text = padiglione.descrizione
-            val geoPad = padiglione.posizione
+
+            /*val geoPad = padiglione.posizione
             tvPosizionePad.text = if (geoPad != null) {
                 "Lat: ${geoPad.latitude}, Lon: ${geoPad.longitude}"
             } else {
                 "Posizione non disponibile"
-            }
-            tvOrari.text = "Aperto dalle ${padiglione.ora_apertura} alle ${padiglione.ora_chiusura}"
+            }*/
+            tvPosizionePad.text = padiglione.via
+
+            val oraApertura = padiglione.ora_apertura
+            val oraChiusura = padiglione.ora_chiusura
+            tvOrari.text = "Aperto dalle $oraApertura alle $oraChiusura"
 
             // Click sull'intero item
             itemView.setOnClickListener {

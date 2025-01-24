@@ -74,7 +74,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                 descrizione TEXT,
                 ora_apertura TEXT,
                 ora_chiusura TEXT,
-                posizione TEXT
+                posizione TEXT,
+                via TEXT
             );
             """.trimIndent()
         Log.d(
@@ -112,6 +113,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
     companion object {
         private const val TAG = "DatabaseHelper"
         private const val DB_NAME = "1nsubria_survive.db"
-        private const val DB_VERSION = 2
+        private const val DB_VERSION = 3
     }
 }

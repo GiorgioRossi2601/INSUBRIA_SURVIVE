@@ -78,7 +78,7 @@ class TimelineFragment : Fragment() {
     /**
      * Mostra il dialog per la conferma del salvataggio dell'evento su calendario.
      *
-     * @param esame L'esame da inserire.
+     * @param padiglione L'esame da inserire.
      */
     private fun showConfermaMapsPadiglione(padiglione: Padiglione) {
         Log.d(TAG, "showConfermaMapsPadiglione: Mostro dialog per conferma maps del padiglione: ${padiglione.codice_padiglione}")
@@ -114,10 +114,11 @@ class TimelineFragment : Fragment() {
         val lat= posizione.latitude
         val lng=posizione.longitude
         val codice=padiglione.codice_padiglione
+        val via=padiglione.via
 
         // Creazione URI per Google Maps
         // geo:lat,lng?q=lat,lng(Label)
-        val gmmIntentUri = android.net.Uri.parse("geo:$lat,$lng?q=$lat,$lng(PADIGLIONE ${codice})")
+        val gmmIntentUri = android.net.Uri.parse("geo:$lat,$lng?q=$lat,$lng(PADIGLIONE $codice - $via)")
 
         // Creazione Intent esplicito per Google Maps
         val mapIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, gmmIntentUri).apply {

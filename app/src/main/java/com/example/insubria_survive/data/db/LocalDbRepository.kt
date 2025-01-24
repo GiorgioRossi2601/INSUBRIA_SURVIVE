@@ -279,12 +279,12 @@ class LocalDbRepository(context: Context) {
             put("descrizione", padiglione.descrizione)
             put("ora_apertura", padiglione.ora_apertura)
             put("ora_chiusura", padiglione.ora_chiusura)
-
             if (padiglione.posizione != null) {
                 val lat = padiglione.posizione.latitude
                 val lng = padiglione.posizione.longitude
                 put("posizione", "$lat,$lng")
             }
+            put("via", padiglione.via)
         }
 
         Log.d(TAG, "Inserimento/aggiornamento padiglione: $contentValues")
@@ -324,6 +324,7 @@ class LocalDbRepository(context: Context) {
                             GeoPoint(lat, lng)
                         } else null
                     } else null
+                    val viaPad = cursor.getString(cursor.getColumnIndexOrThrow("via"))
 
                     val padiglione = Padiglione(
                         id = idPad,
@@ -331,7 +332,8 @@ class LocalDbRepository(context: Context) {
                         descrizione = descrizionePad,
                         ora_apertura = oraApertura,
                         ora_chiusura = oraChiusura,
-                        posizione = posizionePad
+                        posizione = posizionePad,
+                        via = viaPad
                     )
                     padiglioniList.add(padiglione)
                 } while (cursor.moveToNext())

@@ -69,8 +69,8 @@ class TimelineViewModel(
                         }
                     }.sortedWith(
                         compareBy(
-                            { it.codice_padiglione},
-                            { it.ora_apertura}
+                            { it.ora_apertura },
+                            { it.codice_padiglione }
                         )
                     )
 

@@ -21,11 +21,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ESAMI"
-            android:textStyle="bold"
-            android:textSize="30sp"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
-            android:textColor="@color/insubria" />
+            android:textColor="@color/insubria"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center_horizontal"
+            android:textSize="30sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewEsami"
             android:layout_width="match_parent"

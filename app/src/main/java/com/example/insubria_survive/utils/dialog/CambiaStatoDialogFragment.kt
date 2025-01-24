@@ -15,6 +15,7 @@ import com.example.insubria_survive.data.model.Preferenza
 import com.example.insubria_survive.data.model.Stato
 import com.example.insubria_survive.ui.preferenze.PreferenzeViewModel
 import com.example.insubria_survive.ui.preferenze.PreferenzeViewModelFactory
+import com.example.insubria_survive.utils.UtilsMethod
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Locale
 
@@ -28,6 +29,8 @@ class CambiaStatoDialogFragment : DialogFragment() {
         private const val TAG = "CambiaStatoDialogFragment"
         private const val ARG_ESAME_ID = "esame_codice"
         private const val ARG_STATO = "stato"
+        private const val ARG_CORSO = "corso"
+        private const val ARG_DATA = "data"
 
         /**
          * Crea una nuova istanza del dialog per modificare lo stato di un [Esame].
@@ -40,6 +43,8 @@ class CambiaStatoDialogFragment : DialogFragment() {
             val args = Bundle().apply {
                 putString(ARG_ESAME_ID, esame.id)
                 putString(ARG_STATO, statoCorrente?.name ?: Stato.IN_FORSE.name)
+                putString(ARG_CORSO, esame.corso)
+                putString(ARG_DATA, UtilsMethod().firebaseTimestampToDateLongFormat(esame.data!!))
             }
             fragment.arguments = args
             return fragment
@@ -56,8 +61,10 @@ class CambiaStatoDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Estrae l'id dell'esame e lo stato corrente dai parametri
         val esameId = arguments?.getString(ARG_ESAME_ID) ?: ""
+        val corso = arguments?.getString(ARG_CORSO) ?: ""
+        val data = arguments?.getString(ARG_DATA) ?: ""
         val nomeStatoCorrente = arguments?.getString(ARG_STATO) ?: Stato.IN_FORSE.name
-        Log.d(TAG, "onCreateDialog: esameId=$esameId, statoCorrente=$nomeStatoCorrente")
+        Log.d(TAG, "onCreateDialog: esameId=$esameId, corso=$corso, statoCorrente=$nomeStatoCorrente")
 
         // Ottiene tutti i possibili stati dall'enum [Stato]
         val stati = Stato.values()
@@ -78,7 +85,7 @@ class CambiaStatoDialogFragment : DialogFragment() {
         )
 
         return MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Cambia Stato dell'Esame $esameId:")
+            .setTitle("$corso - $data")
             .setSingleChoiceItems(adapter, selectedIndex) { _, which ->
                 selectedIndex = which
                 Log.d(TAG, "Stato selezionato: ${stati[selectedIndex].name}")
@@ -104,13 +111,15 @@ class CambiaStatoDialogFragment : DialogFragment() {
                     // Aggiorna il ViewModel per ricaricare la lista delle preferenze
                     preferenzeViewModel.loadPreferenze()
 
-                    val message = "Preferenza aggiunta con successo! Stato: ${statoSelezionato.name.replace("_", " ").uppercase(Locale.getDefault())}"
+                    val message = "Preferenza aggiornata"
                     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
                 }
                 dialog.dismiss()
             }
             .setNegativeButton("Annulla") { dialog, _ ->
                 Log.d(TAG, "Azione Annulla eseguita")
+                val message = "Operazione annullata"
+                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
                 dialog.dismiss()
             }
             .create()

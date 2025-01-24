@@ -10,7 +10,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  *
  * Mostra un dialog "Si/No" e invoca la callback passando la stringa "si" o "no" in base alla scelta dell'utente.
  */
-class ConfirmAddEventDialogFragment : DialogFragment() {
+class ConfirmAddEventDialogFragment() : DialogFragment() {
     /**
      * Callback che restituisce la risposta ("si" oppure "no").
      */
@@ -18,7 +18,7 @@ class ConfirmAddEventDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Vuoi salvare evento sul Google Calendar?")
+            .setTitle("Vuoi salvare l'evento sul Google Calendar?")
             .setPositiveButton("Si") { _, _ ->
                 callback?.invoke("si")
             }

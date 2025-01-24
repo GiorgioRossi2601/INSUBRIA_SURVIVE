@@ -152,13 +152,13 @@ class LezioniFragment : Fragment() {
                     if (success) {
                         Toast.makeText(
                             requireContext(),
-                            "Evento Lezione creato con successo!\nVisualizzalo qui: $info",
+                            "Lezione aggiunta al Google Calendar",
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
                         Toast.makeText(
                             requireContext(),
-                            "Errore nella creazione dell'evento: $info",
+                            "Errore nella aggiunta della lezione al Google Calendar",
                             Toast.LENGTH_SHORT
                         ).show()
                     }

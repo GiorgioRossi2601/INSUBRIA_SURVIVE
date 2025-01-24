@@ -147,14 +147,14 @@ class EsamiFragment : Fragment() {
                 if (success) {
                     Toast.makeText(
                         requireContext(),
-                        "Evento creato con successo!\nVisualizzalo qui: $info",
+                        "Esame aggiunto al Google Calendar",
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "Errore nella creazione dell'evento: $info",
-                        Toast.LENGTH_SHORT
+                        "Errore nella aggiunta dell'esame al Google Calendar",
+                        Toast.LENGTH_LONG
                     ).show()
                 }
             }
@@ -179,11 +179,6 @@ class EsamiFragment : Fragment() {
         esamiAdapter.setOnItemClickListener(object : EsamiAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val esameSelezionato = esamiAdapter.getEsameAt(position)
-                Toast.makeText(
-                    requireContext(),
-                    "Hai cliccato sull'item: ${esameSelezionato.corso}",
-                    Toast.LENGTH_SHORT
-                ).show()
                 Log.d(TAG, "onItemClick: Click sull'item: ${esameSelezionato.id}")
                 showConfermaAggiuntaCalendario(esameSelezionato)
             }

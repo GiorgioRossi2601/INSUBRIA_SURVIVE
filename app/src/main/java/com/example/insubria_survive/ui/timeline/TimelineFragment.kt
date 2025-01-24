@@ -95,12 +95,6 @@ class TimelineFragment : Fragment() {
     }
 
     private fun handleItemClick(padiglione: Padiglione) {
-        Toast.makeText(
-            requireContext(),
-            "Hai cliccato sull'item: ${padiglione.codice_padiglione}",
-            Toast.LENGTH_LONG
-        ).show()
-
         val posizione = padiglione.posizione
         if (posizione == null) {
             Toast.makeText(

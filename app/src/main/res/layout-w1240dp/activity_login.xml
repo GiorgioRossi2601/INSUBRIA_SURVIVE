@@ -23,7 +23,7 @@
         android:paddingBottom="8dp"
         android:text="@string/INSUBRIA_SURVIVE"
         android:textColor="@color/insubria"
-        android:textSize="34sp"
+        android:textSize="40sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

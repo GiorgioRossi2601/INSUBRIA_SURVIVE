@@ -19,7 +19,6 @@
         android:paddingBottom="8dp"
         android:textColor="@color/insubria"
         android:gravity="center_horizontal"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTimeline"
         android:layout_width="match_parent"

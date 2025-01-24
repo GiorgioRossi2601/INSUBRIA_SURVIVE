@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-01-24T10:27:46.851315500Z">
+        <DropdownSelection timestamp="2025-01-24T11:17:55.101237200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\gigio\.android\avd\Medium_Tablet_API_35.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=R58MC3B0VTZ" />
             </handle>
           </Target>
         </DropdownSelection>

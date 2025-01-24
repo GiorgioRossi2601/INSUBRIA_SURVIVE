@@ -35,6 +35,7 @@
     <string name="INSUBRIA_SURVIVE">INSUBRIA SURVIVE</string>
     <string name="ESAMI">TUTTI GLI ESAMI</string>
     <string name="TIMELINE">ORARI DEI PADIGLIONI</string>
+    <string name="PAD">PUNTI D\'ACCESSO DELL\'ATENEO</string>
 
 
 </resources>

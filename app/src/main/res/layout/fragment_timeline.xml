@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,10 +8,21 @@
     android:orientation="vertical"
     tools:context=".ui.timeline.TimelineFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/PAD"
+        android:textStyle="italic"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-black"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/insubria"
+        android:gravity="center_horizontal"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTimeline"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp" />
-
 </LinearLayout>

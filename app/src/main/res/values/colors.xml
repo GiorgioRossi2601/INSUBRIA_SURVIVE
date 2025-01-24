@@ -10,5 +10,6 @@
     <color name="colorInForse">#FFF59D</color>
     <!-- rosso chiaro -->
     <color name="colorNonFare">#EF9A9A</color>
+    <color name="sfondo_login">#FFF8DC</color>
 
 </resources>
